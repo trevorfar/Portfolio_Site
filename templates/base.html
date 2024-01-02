@@ -10,7 +10,41 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    
+    <style>
+      body {
+          background-color: #659DBD; /* Set your desired background color here */
+      }
+      .navbar-nav .nav-item {
+        border: 2px solid #8D8741; /* Set your desired border color here */
+        border-radius: 5px; 
+        margin: 0 5px;
+        background-color: #8D8741;
+        color: white;
+
+    }
+      .navbar {
+        background-color: #FBEEC1 !important; /* Set your desired navbar background color here */
+    }
+
+     
+
+      .navbar-nav .nav-item.linkedIn {
+        
+      background-color: #FBEEC1; /* Set a different fill color for the exception item */
+      border-color: #FBEEC1; /* Set a different border color for the exception item */
+      }
+
+      .navbar-nav {
+        width: 100%;
+    }
+
+      .navbar-brand{
+        background-color: #8D8741;
+        border-radius: 5px; 
+        border: 2px solid #8D8741;
+      }
+
+  </style>
 
     <title>{% block title %} {% endblock %}</title>
   </head>
@@ -23,35 +57,26 @@
         </button>
         <div class="collapse navbar-collapse r " id="navbarNav">
 
-        
-
-            <ul class="navbar-nav mx-auto">
-
-            <li class="nav-item active">
+            <ul class="navbar-nav ">
+            <li class="nav-item ">
                 <a class="nav-link" href="{{url_for('about')}}">About</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item ">
               <a class ="nav-link" href= " {{url_for('app1')}}">APP 1</a>
-
             </li>
-
-            <li class="nav-item">
+            <li class="nav-item ">
               <a class ="nav-link" href= " {{url_for('app2')}}">APP 2</a>
-
             </li>
+            </ul>
 
-            <li class="nav-item">
+            <ul class ="navbar-nav ">
+              <li class="nav-item linkedIn ml-auto">
               <a class ="nav-link" href= "https://www.linkedin.com/in/trevor-farias-454aa2278" target="_blank">
                 <img src="static/Images/LinkedInLogoNEW.jpg" alt="LinkedIn Portfolio" width = "25" height = "25">
               </a>
             </li>
             </ul>
-
-            <!-- <ul class="navbar-nav ml-auto">
-              <li class="nav-item active">
-              <a class="nav-link" href="{{url_for('about')}}">TEST</a>
-              </li>
-            </ul> -->
+         
 
 
         </div>
