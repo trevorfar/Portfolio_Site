@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h1>{% block title %} Welcome to my Site! {% endblock %}</h1>
-    {% for post in posts %}
+
+    <h1>{% block title %} Welcome to my  {% endblock %}</h1>
+
+    <!-- USE LATER -->
+    <!-- {% for post in posts %}
         <a href="{{ url_for('post', post_id=post['id']) }}">
             <h2>{{ post['title'] }}</h2>
         </a>
@@ -10,5 +13,6 @@
             <span class="badge badge-warning">Edit</span>
         </a>
         <hr>
-    {% endfor %}
+    {% endfor %} -->
+
 {% endblock %}

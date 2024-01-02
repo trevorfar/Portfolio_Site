@@ -1,7 +1,11 @@
-h1 {
-    border: 2px #eee solid;
-    color: brown;
+
+.navbar li{
+    display: inline-block;
+    margin: 0 10px; /* Adjust the spacing between navbar items */
     text-align: center;
-    padding: 10px;
+}
+
+body {
+    overflow-y: auto;
 }
 
