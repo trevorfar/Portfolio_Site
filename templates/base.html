@@ -17,10 +17,14 @@
   <body>
     <nav class="navbar navbar-expand-md navbar-light bg-light ">
         <a class="navbar-brand" href="{{ url_for('index')}}" >Home</a>
+      
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"></span> 
         </button>
         <div class="collapse navbar-collapse r " id="navbarNav">
+
+        
+
             <ul class="navbar-nav mx-auto">
 
             <li class="nav-item active">
@@ -36,10 +40,25 @@
 
             </li>
 
-
+            <li class="nav-item">
+              <a class ="nav-link" href= "https://www.linkedin.com/in/trevor-farias-454aa2278" target="_blank">
+                <img src="static/Images/LinkedInLogoNEW.jpg" alt="LinkedIn Portfolio" width = "25" height = "25">
+              </a>
+            </li>
             </ul>
+
+            <!-- <ul class="navbar-nav ml-auto">
+              <li class="nav-item active">
+              <a class="nav-link" href="{{url_for('about')}}">TEST</a>
+              </li>
+            </ul> -->
+
+
         </div>
     </nav>
+
+   
+
     <div class="container">
       {% for message in get_flashed_messages() %}
       <div class="alert alert-danger">{{ message }}</div>
