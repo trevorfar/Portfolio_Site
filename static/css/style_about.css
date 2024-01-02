@@ -1,12 +1,9 @@
 h1 {
-    border: 2px #eee solid;
-    color: #F85836;
     text-align: center;
-    padding: 10px;
+    padding-top: 15px;
 }
 
 p {
     text-align: center;
     color: black;
-    background: yellow;
     }

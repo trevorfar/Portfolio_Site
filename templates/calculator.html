@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %} Calculator {% endblock %}
+
+
+{% block content %}
+<script src="static/java/calculatorScript.js" ></script>
+
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style_app1.css') }}">
+<div id="Calculator">
+<form id="CalculatorForm" action="/calculate" method="post">
+    <input type="text" name="expression" id="display" readonly>
+    
+    <button type="button" onclick="appendToExpression('1')">1</button>
+    <button type="button" onclick="appendToExpression('2')">2</button>
+    <button type="button" onclick="appendToExpression('3')">3</button>
+    <button type="button" onclick="appendToExpression('4')">4</button>
+    <button type="button" onclick="appendToExpression('5')">5</button>
+    <button type="button" onclick="appendToExpression('6')">6</button>
+    <button type="button" onclick="appendToExpression('7')">7</button>
+    <button type="button" onclick="appendToExpression('8')">8</button>
+    <button type="button" onclick="appendToExpression('9')">9</button>
+
+    <button type="button" onclick="clearExpression()">C</button>
+
+    <button type="button" onclick="appendToExpression('+')">+</button>
+    <button type="button" onclick="appendToExpression('-')">-</button>
+    <button type="button" onclick="appendToExpression('/')">/</button>
+    <button type="button" onclick="appendToExpression('*')">*</button>
+
+    <button type="submit" >=</button>
+
+</form>
+{% if result is defined %}
+    <p> Result: {{ result }}</p>
+{%elif error is defined %}
+    <p>Error: {{ error }}</p>
+    {%endif %}
+</div>
+
+
+{% endblock %}

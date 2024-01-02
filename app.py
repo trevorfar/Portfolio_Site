@@ -1,5 +1,5 @@
 import sqlite3
-from flask import Flask, render_template, request, url_for, flash, redirect
+from flask import Flask, render_template, request, url_for, flash, redirect, jsonify
 from werkzeug.exceptions import abort
 import os
 from dotenv import load_dotenv
@@ -10,10 +10,18 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'fallback_secret_key')
 
 
+
 def get_db_connection():
     conn = sqlite3.connect('database.db')
     conn.row_factory = sqlite3.Row
     return conn
+
+def evaluate_expression(expression):
+    try:
+        result = eval(expression)
+        return result, None
+    except Exception as e:
+        return None, str(e)
 
 def get_post(post_id): 
     conn = get_db_connection()
@@ -95,10 +103,17 @@ def delete(id):
 def about():
     return render_template('about.html')
 
-@app.route('/app1')
-def app1():
-    return render_template('app1.html')
 
+@app.route('/calculator')
+def calculator():
+    return render_template('calculator.html')
+
+@app.route('/calculate', methods=['POST'])
+def calculate():
+    expression = request.form.get('expression')
+    result, error = evaluate_expression(expression)
+    return render_template('calculator.html', result=result, error=error)
+    
 @app.route('/app2')
 def app2():
     return render_template('app2.html')
