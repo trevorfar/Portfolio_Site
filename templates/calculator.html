@@ -8,9 +8,12 @@
 
 
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style_app1.css') }}">
+
 <div id="Calculator">
 <form id="CalculatorForm" action="/calculate" method="post">
-    <input type="text" name="expression" id="display" readonly>
+
+    <textarea name="expression" id="display" readonly>{{ expression| safe }} <br> {{ result | safe }}</textarea>
+
     
     <button type="button" onclick="appendToExpression('1')">1</button>
     <button type="button" onclick="appendToExpression('2')">2</button>
@@ -21,6 +24,8 @@
     <button type="button" onclick="appendToExpression('7')">7</button>
     <button type="button" onclick="appendToExpression('8')">8</button>
     <button type="button" onclick="appendToExpression('9')">9</button>
+    <button type="button" onclick="appendToExpression('0')">0</button>
+    <button type="button" onclick="appendToExpression('.')">.</button>
 
     <button type="button" onclick="clearExpression()">C</button>
 
@@ -30,13 +35,7 @@
     <button type="button" onclick="appendToExpression('*')">*</button>
 
     <button type="submit" >=</button>
-
 </form>
-{% if result is defined %}
-    <p> Result: {{ result }}</p>
-{%elif error is defined %}
-    <p>Error: {{ error }}</p>
-    {%endif %}
 </div>
 
 

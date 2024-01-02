@@ -9,14 +9,15 @@ load_dotenv()
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'fallback_secret_key')
 
-
+expHistory = []
+resHistory = []
 
 def get_db_connection():
     conn = sqlite3.connect('database.db')
     conn.row_factory = sqlite3.Row
     return conn
 
-def evaluate_expression(expression):
+def evaluateExpression(expression):
     try:
         result = eval(expression)
         return result, None
@@ -107,13 +108,25 @@ def about():
 @app.route('/calculator')
 def calculator():
     return render_template('calculator.html')
+
 #Sends the response as POST. All works off expression string. It returns an error if it's not a valid string NEEDS KEYBOARD SUPPORT
 @app.route('/calculate', methods=['POST'])
 def calculate():
+
     expression = request.form.get('expression')
-    result, error = evaluate_expression(expression)
-    return render_template('calculator.html', result=result, error=error)
+    result, error = evaluateExpression(expression)
+    if error:
+        return render_template('calculator.html', result=result, expression=expression, error=error,
+                               expHistory=expHistory, resHistory=resHistory)
+    expHistory.append(expression)
+    resHistory.append(result)
+
+    return render_template('calculator.html', result=result, expression=expression,
+                           expHistory=expHistory, resHistory=resHistory)
     
+    
+
+
 @app.route('/app2')
 def app2():
     return render_template('app2.html')

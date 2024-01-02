@@ -1,0 +1,38 @@
+#CalculatorForm {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+    max-width: 300px;
+    padding-top: 15px;
+    margin: 0 auto;
+}
+
+#CalculatorForm textarea{
+    grid-column: span 4;
+    padding: 10px;
+    font-size: 16px;
+    text-align: right;
+}
+
+#CalculatorForm button {
+    font-size: 16px;
+    padding: 10px;
+    background-color: grey;
+    color: white;
+    border: 1px solid black;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+#CalculatorForm button:hover{
+    background-color: rgb(81, 80, 80)
+}
+
+#CalculatorForm button[type="submit"]{
+    background-color: blue;
+    border: 1px solid blue;
+}
+
+#CalculatorForm button[type="submit"]:hover{
+    background-color: rgb(0, 0, 95);
+}
