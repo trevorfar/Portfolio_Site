@@ -107,7 +107,7 @@ def about():
 @app.route('/calculator')
 def calculator():
     return render_template('calculator.html')
-
+#Sends the response as POST. All works off expression string. It returns an error if it's not a valid string NEEDS KEYBOARD SUPPORT
 @app.route('/calculate', methods=['POST'])
 def calculate():
     expression = request.form.get('expression')
