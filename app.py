@@ -19,10 +19,20 @@ def get_db_connection():
 
 def evaluateExpression(expression):
     try:
+
+        if not expression.strip():
+            return 0, None
+        
         result = eval(expression)
         return result, None
     except Exception as e:
         return None, str(e)
+    
+def clear():
+   return '', None
+
+def clearHistory():
+   return '', ''
 
 def get_post(post_id): 
     conn = get_db_connection()
@@ -112,17 +122,25 @@ def calculator():
 #Sends the response as POST. All works off expression string. It returns an error if it's not a valid string NEEDS KEYBOARD SUPPORT
 @app.route('/calculate', methods=['POST'])
 def calculate():
-
+    global expHistory, resHistory
     expression = request.form.get('expression')
+
+    if expHistory and resHistory:
+        # Clear the display if there are already equations in history
+        expression, result = clear()
+        expHistory, resHistory = clearHistory()
+
     result, error = evaluateExpression(expression)
+
     if error:
-        return render_template('calculator.html', result=result, expression=expression, error=error,
-                               expHistory=expHistory, resHistory=resHistory)
+        return render_template('calculator.html', result=result if result is not None else "Invalid Expression", expression=expression, error=None,
+        expHistory=expHistory, resHistory=resHistory)
+    
     expHistory.append(expression)
     resHistory.append(result)
-
+        
     return render_template('calculator.html', result=result, expression=expression,
-                           expHistory=expHistory, resHistory=resHistory)
+        expHistory=expHistory, resHistory=resHistory)
     
     
 

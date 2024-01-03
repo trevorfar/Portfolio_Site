@@ -10,9 +10,11 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style_app1.css') }}">
 
 <div id="Calculator">
-<form id="CalculatorForm" action="/calculate" method="post">
+<form id="CalculatorForm" action="/calculate" method="post" >
 
-    <textarea name="expression" id="display" readonly>{{ expression| safe }} <br> {{ result | safe }}</textarea>
+<textarea name="expression" id="display" readonly style ="text-align: right">
+    {{ expression }}
+    {{ "Error: Invalid Expression" if result == "Invalid Expression" else result }}</textarea>
 
     
     <button type="button" onclick="appendToExpression('1')">1</button>
