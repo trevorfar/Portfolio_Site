@@ -19,14 +19,15 @@
       }
       .navbar-nav .nav-item {
         border: 2px solid #7b7539; /* Set your desired border color here */
-        border-radius: 5px; 
+        border-radius: 5px;   
         margin: 0 5px;
         background-color: #7b7539;
         color: white;
+        
 
     }
       .navbar {
-        background-color: #FBEEC1 !important; /* Set your desired navbar background color here */
+        background-color: red !important; /* Set your desired navbar background color here */
     }
 
      
@@ -41,53 +42,63 @@
         width: 100%;
     }
 
-      .navbar-brand{
-        background-color: #8D8741;
-        border-radius: 5px; 
-        border: 2px solid #8D8741;
-      }
+    .dropdown:hover > .dropdown-menu {
+      display: block;
+    }
+    .dropdown > .dropdown-toggle:active {
+      /*Without this, clicking will make it sticky*/
+      pointer-events: none;
+   }
 
       
 
   </style>
 
-    <title>{% block title %} {% endblock %}</title>
+    <title>{% block title %} Trevor Farias {% endblock %}</title>
   </head>
   <body>
-    <nav class="navbar navbar-expand-md navbar-light bg-light ">
-        <a class="navbar-brand" href="{{ url_for('index')}}" >Home</a>
-      
+    <nav class="navbar navbar-expand-md navbar-light bg-light ">      
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span> 
         </button>
-        <div class="collapse navbar-collapse r " id="navbarNav">
+        <div class="collapse navbar-collapse " id="navbarNav">
 
-            <ul class="navbar-nav ">
+            <ul class="navbar-nav mx-auto d-flex justify-content-center">
             <li class="nav-item ">
+                <a class="nav-link" href="{{url_for('index')}}">Home</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="{{url_for('about')}}">About</a>
             </li>
-            <li class="nav-item ">
-              <a class ="nav-link" href= " {{url_for('calculator')}}">Calculator</a>
+          
+           
+            <li class="nav-item dropdown">
+              <a class="nav-link" id="projectsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" 
+              href="#">Projects</a>
+              <div class="dropdown-menu" aria-labelledby="contactsDropdown">
+
+                <a class="dropdown-item"  href="{{url_for('calculator')}}">Calculator</a>
+                <a class="dropdown-item" href=" #">Coming Soon</a>
+                <a class="dropdown-item" href="#">Coming Soon</a>
+              </div>
             </li>
-            <li class="nav-item ">
-              <a class ="nav-link" href= " {{url_for('app2')}}">APP 2</a>
+        
+            <li class="nav-item dropdown">
+              <a class="nav-link" id="contactsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" 
+              href="{{url_for('index')}}">Contacts</a>
+              <div class="dropdown-menu" aria-labelledby="contactsDropdown">
+                <!-- Dropdown items go here -->
+                <a class="dropdown-item" target="_blank" href="https://www.linkedin.com/in/trevor-farias-454aa2278">LinkedIn</a>
+                <a class="dropdown-item" href="mailto:trevorof@yahoo.com">Email</a>
+                <a class="dropdown-item" href="#">Instagram</a>
+                <!-- Add more items as needed -->
+              </div>
             </li>
             </ul>
-
-            <ul class ="navbar-nav ">
-              <li class="nav-item linkedIn ml-auto">
-              <a class ="nav-link" href= "https://www.linkedin.com/in/trevor-farias-454aa2278" target="_blank">
-                <img src="static/Images/LinkedInLogoNEW.jpg" alt="LinkedIn Portfolio" width = "25" height = "25">
-              </a>
-            </li>
-            </ul>
-         
-
-
         </div>
     </nav>
 
-   
+    
 
     <div class="container">
       {% for message in get_flashed_messages() %}
