@@ -9,50 +9,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-    <style>
-      body {
-          background-color: whitesmoke; /* Set your desired background color here */
-          overflow-y: auto !important;
-          height: 100vh !important; /* Set a minimum height of 100% of the viewport height */
-
-      }
-      .navbar-nav .nav-item {
-        border: 2px solid #7b7539; /* Set your desired border color here */
-        border-radius: 5px;   
-        margin: 0 5px;
-        background-color: #7b7539;
-        color: white;
-        
-
-    }
-      .navbar {
-        background-color: red !important; /* Set your desired navbar background color here */
-    }
-
-     
-
-      .navbar-nav .nav-item.linkedIn {
-        
-      background-color: #FBEEC1; /* Set a different fill color for the exception item */
-      border-color: #FBEEC1; /* Set a different border color for the exception item */
-      }
-
-      .navbar-nav {
-        width: 100%;
-    }
-
-    .dropdown:hover > .dropdown-menu {
-      display: block;
-    }
-    .dropdown > .dropdown-toggle:active {
-      /*Without this, clicking will make it sticky*/
-      pointer-events: none;
-   }
-
-      
-
-  </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/indexStyle.css') }}">
 
     <title>{% block title %} Trevor Farias {% endblock %}</title>
   </head>
@@ -89,9 +46,8 @@
               <div class="dropdown-menu" aria-labelledby="contactsDropdown">
                 <!-- Dropdown items go here -->
                 <a class="dropdown-item" target="_blank" href="https://www.linkedin.com/in/trevor-farias-454aa2278">LinkedIn</a>
-                <a class="dropdown-item" href="mailto:trevorof@yahoo.com">Email</a>
+                <a class="dropdown-item" href="mailto:trevor_farias@yahoo.com">Email</a>
                 <a class="dropdown-item" href="#">Instagram</a>
-                <!-- Add more items as needed -->
               </div>
             </li>
             </ul>
