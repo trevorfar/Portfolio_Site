@@ -4,12 +4,26 @@
     gap: 5px;
     max-width: 300px;
     padding-top: 15px;
-    margin: 0 auto;
+    margin: 30px auto 0 auto;
+    background-color: darkgray; 
+    padding: 10px; 
+    border-radius: 10px; 
+
+
 }
+
+#display{
+    border-radius: 20px;
+    border: 1px solid black;
+    overflow: hidden; 
+}
+
+
 
 #CalculatorForm textarea{
     grid-column: span 4;
     padding: 10px;
+    height: 60px;
     font-size: 16px;
     text-align: right;
     resize: none;

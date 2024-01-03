@@ -12,13 +12,16 @@
 
     <style>
       body {
-          background-color: #659DBD; /* Set your desired background color here */
+          background-color: whitesmoke; /* Set your desired background color here */
+          overflow-y: auto !important;
+          height: 100vh !important; /* Set a minimum height of 100% of the viewport height */
+
       }
       .navbar-nav .nav-item {
-        border: 2px solid #8D8741; /* Set your desired border color here */
+        border: 2px solid #7b7539; /* Set your desired border color here */
         border-radius: 5px; 
         margin: 0 5px;
-        background-color: #8D8741;
+        background-color: #7b7539;
         color: white;
 
     }
@@ -43,6 +46,8 @@
         border-radius: 5px; 
         border: 2px solid #8D8741;
       }
+
+      
 
   </style>
 
@@ -91,6 +96,11 @@
       {% block content %} {% endblock %}
     </div>
 
+    <footer class="footer mt-auto py-3 bg-light text-black fixed-bottom">
+      <div class="container text-center">
+          <p>&copy; 2024 Trevor-Farias. All rights reserved.</p>
+      </div>
+  </footer>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
