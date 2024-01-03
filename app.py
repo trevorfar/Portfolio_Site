@@ -1,5 +1,6 @@
 import sqlite3
-from flask import Flask, render_template, request, url_for, flash, redirect, jsonify
+from flask import Flask, render_template, request, url_for, flash, redirect, jsonify, session
+from flask_session import Session
 from werkzeug.exceptions import abort
 import os
 from dotenv import load_dotenv
@@ -8,6 +9,8 @@ load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'fallback_secret_key')
+app.config['SESSION_TYPE'] = 'filesystem'  # Use 'filesystem' for a simple setup
+Session(app)
 
 expHistory = []
 resHistory = []
@@ -19,7 +22,6 @@ def get_db_connection():
 
 def evaluateExpression(expression):
     try:
-
         if not expression.strip():
             return 0, None
         
@@ -32,7 +34,7 @@ def clear():
    return '', None
 
 def clearHistory():
-   return '', ''
+   return [], []
 
 def get_post(post_id): 
     conn = get_db_connection()
@@ -122,13 +124,15 @@ def calculator():
 #Sends the response as POST. All works off expression string. It returns an error if it's not a valid string NEEDS KEYBOARD SUPPORT
 @app.route('/calculate', methods=['POST'])
 def calculate():
-    global expHistory, resHistory
+   
     expression = request.form.get('expression')
+    expHistory = session.get('expHistory', [])
+    resHistory = session.get('resHistory', [])
 
     if expHistory and resHistory:
         # Clear the display if there are already equations in history
         expression, result = clear()
-        expHistory, resHistory = clearHistory()
+        session['expHistory'], session['resHistory'] = clearHistory()
 
     result, error = evaluateExpression(expression)
 
@@ -138,12 +142,12 @@ def calculate():
     
     expHistory.append(expression)
     resHistory.append(result)
+
+    session['expHistory'] = expHistory
+    session['resHistory'] = resHistory
         
     return render_template('calculator.html', result=result, expression=expression,
         expHistory=expHistory, resHistory=resHistory)
-    
-    
-
 
 @app.route('/app2')
 def app2():
