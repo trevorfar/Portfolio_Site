@@ -1,19 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
+
 <link rel="stylesheet" href="{{ url_for('static', filename='css/indexStyle.css') }}">
-    
-    <h1>{% block title %} Hey. I'm Trevor Farias, a Second Year Computer Engineering student currently attending Queen's University.  {% endblock %}</h1>
 
-    <!-- USE LATER -->
-    <!-- {% for post in posts %}
-        <a href="{{ url_for('post', post_id=post['id']) }}">
-            <h2>{{ post['title'] }}</h2>
-        </a>
-        <span class="badge badge-primary">{{ post['created'] }}</span>
-        <a href="{{ url_for('edit', id=post['id']) }}">
-            <span class="badge badge-warning">Edit</span>
-        </a>
-        <hr>
-    {% endfor %} -->
-
+    <div class="image-container">
+        <img src="static/Images/bg.jpg" alt = "headshot">   
+    </div>
+    <div class="content">Box</div>
 {% endblock %}
