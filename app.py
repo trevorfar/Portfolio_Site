@@ -124,7 +124,6 @@ def calculator():
 #Sends the response as POST. All works off expression string. It returns an error if it's not a valid string NEEDS KEYBOARD SUPPORT
 @app.route('/calculate', methods=['POST'])
 def calculate():
-   
     expression = request.form.get('expression')
     expHistory = session.get('expHistory', [])
     resHistory = session.get('resHistory', [])
@@ -134,6 +133,7 @@ def calculate():
         expression, result = clear()
         session['expHistory'], session['resHistory'] = clearHistory()
 
+    expression = request.form.get('expression')
     result, error = evaluateExpression(expression)
 
     if error:
@@ -151,4 +151,4 @@ def calculate():
 
 @app.route('/app2')
 def app2():
-    return render_template('app2.html')
+    return render_template('app2.html') 
