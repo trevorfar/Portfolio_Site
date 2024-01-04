@@ -1,17 +1,18 @@
 
+
+ body{
+    margin: 0;
+    padding: 0;
+    height: 720px;
+    background-image: url('../Images/whiteAndGrey.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+ }
+
  
-    .image-container{
-    margin-top: 20px; /* Adjust the margin-top as needed */
-    width: 100%;
-    height: 50vh;
-    overflow: hidden;
-    }
-    .image-container img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover; /* Maintain image aspect ratio while covering the container */
-    }
     .content {
         /* Add styles for your content here */
         margin-top: 20px; /* Adjust the margin-top as needed */
     }
+
+    
