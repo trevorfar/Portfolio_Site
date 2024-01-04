@@ -5,8 +5,9 @@
 
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style_about.css') }}">
-
-    <h1>About</h1>
+<div class="content">
+    <div class="aboutContainer mx-auto  justify-content-center">
+        <h1>About</h1>
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sit amet mattis nisl. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus ac arcu placerat, tempus nisl vel, dictum erat. Fusce maximus sem lacus, vitae commodo libero dapibus ut. Aenean faucibus, diam ac tincidunt mollis, dui lorem tristique nulla, vitae pretium sapien turpis ut erat. Pellentesque fringilla sed tortor in semper. Etiam eu enim in arcu interdum facilisis eu sed sem. Aliquam erat volutpat. In non convallis diam. Duis ut velit eu leo facilisis rhoncus. 
         Fusce viverra mi sapien, quis congue justo dapibus ultricies. Ut eget ligula ut dui egestas sagittis.
         Proin volutpat pretium diam vitae tincidunt. Integer risus tellus, malesuada eget neque a, dictum 
@@ -15,6 +16,8 @@
         Mauris varius in enim non sollicitudin. Aenean lorem quam, ultricies nec fermentum a, laoreet at ipsum.
          Aliquam leo quam, mollis eu metus nec, consectetur gravida augue. Donec tellus ante, lobortis id lorem sed, 
          lobortis auctor velit. Aliquam luctus orci eget augue dignissim maximus. Mauris elementum orci sed ante feugiat, 
-         sit amet laoreet diam eleifend. Sed commodo tempor tempor. Proin aliquet efficitur eros, quis sagittis massa. Fusce eu erat diam. 
-         Integer iaculis sapien facilisis, tempor enim eu, suscipit tortor.</p>
+         sit amet laoreet diam eleifend.</p>
+    </div>
+</div>
+    
 {% endblock %}
