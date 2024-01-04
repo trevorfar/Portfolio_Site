@@ -1,0 +1,27 @@
+#tictactoeForm {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 7px;
+    max-width: 300px;
+    margin: 30px auto 0 auto;
+    background-color: #0e3861;
+
+    border: 6px solid #0e3861;
+
+    border-radius: 2px;
+  
+}
+
+#tictactoeForm button {
+    padding: 12px;
+    background-color: #161f28;
+    cursor: pointer;
+    font-size: 12px;
+    text-align: center;
+    border: none;
+}
+
+#tictactoeForm button:hover {
+    opacity: 1;
+    background-color: rgb(81, 80, 80);
+}

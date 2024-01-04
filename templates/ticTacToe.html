@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %} Tic-Tac-Toe {% endblock %}
+
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style_app2.css') }}">
+<div class="content">
+</div>
+    <div id="ticTacToe">
+    <form id="tictactoeForm" action="/ticTacToe" method="post">
+ 
+    <button type="button" onclick="clearExpression()">C</button>
+    <button type="button" onclick="appendToExpression('**')">exp</button>
+    <button type="button" onclick="appendToExpression('%')">mod</button>
+    <button type="button" onclick="appendToExpression('/')">/</button>
+    <button type="button" onclick="appendToExpression('7')">7</button>
+    <button type="button" onclick="appendToExpression('8')">8</button>
+    <button type="button" onclick="appendToExpression('9')">9</button>
+    <button type="button" onclick="appendToExpression('*')">*</button>
+    <button type="button" onclick="appendToExpression('4')">4</button>
+
+    </form>
+   
+    </div>
+    
+{% endblock %}
