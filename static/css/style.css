@@ -18,10 +18,16 @@
   }
   .navbar-nav  .nav-item:hover .nav-link{
   color: darkgrey !important; 
+
   }
   .dropdown:hover > .dropdown-menu {
   display: block;
   }
+
+  .dropdown-menu{
+    top: 96% !important; 
+  }
+
   .dropdown > .dropdown-toggle:active {
   /*Without this, clicking will make it sticky*/
   pointer-events: none;

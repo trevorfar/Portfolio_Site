@@ -38,7 +38,11 @@
             } else if (keyPressed === 'Delete') {
                 event.preventDefault(); 
                 clearExpression();
+            }else if (keyPressed === 'Backspace') {
+                event.preventDefault(); 
+                remFromExpression();
             }
+
         });
     });
     
