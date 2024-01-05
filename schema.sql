@@ -1,8 +1,8 @@
-DROP TABLE IF EXISTS posts;
+-- Drop the table if it exists (for testing purposes)
+DROP TABLE IF EXISTS tic_tac_toe_boards;
 
-CREATE TABLE posts (
+-- Create the tic_tac_toe_boards table
+CREATE TABLE tic_tac_toe_boards (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    title TEXT NOT NULL,
-    content TEXT NOT NULL
-);
+    board_data TEXT
+);  

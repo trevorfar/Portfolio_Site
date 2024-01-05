@@ -15,6 +15,7 @@ Session(app)
 expHistory = []
 resHistory = []
 
+
 def get_db_connection():
     conn = sqlite3.connect('database.db')
     conn.row_factory = sqlite3.Row
@@ -36,6 +37,9 @@ def clear():
 def clearHistory():
    return [], []
 
+currentPlayer = 'X'
+
+
 def get_post(post_id): 
     conn = get_db_connection()
     post = conn.execute('SELECT * FROM posts WHERE id = ?',
@@ -44,6 +48,7 @@ def get_post(post_id):
     if post is None:
         abort(404)
     return post
+
 
 
 @app.route('/')
@@ -98,6 +103,8 @@ def calculate():
     return render_template('calculator.html', result=result, expression=expression,
         expHistory=expHistory, resHistory=resHistory)
 
+
 @app.route('/ticTacToe')
 def ticTacToe():
-    return render_template('ticTacToe.html') 
+    return render_template('ticTacToe.html', )
+

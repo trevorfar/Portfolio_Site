@@ -1,27 +1,24 @@
-#tictactoeForm {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 7px;
-    max-width: 300px;
-    margin: 30px auto 0 auto;
-    background-color: #0e3861;
-
-    border: 6px solid #0e3861;
-
-    border-radius: 2px;
-  
-}
-
-#tictactoeForm button {
-    padding: 12px;
-    background-color: #161f28;
-    cursor: pointer;
-    font-size: 12px;
+body {
+    font-family: 'Arial', sans-serif;
     text-align: center;
-    border: none;
+    margin: 50px;
 }
 
-#tictactoeForm button:hover {
-    opacity: 1;
-    background-color: rgb(81, 80, 80);
+
+#board {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-gap: 5px;
+    justify-content: center;
+}
+.cell {
+    width: 100px;
+    height: 100px;
+    font-size: 24px;
+    border: 2px solid #ccc;
+    cursor: pointer;
+}
+
+.cell:hover{
+    background-color: red;
 }
