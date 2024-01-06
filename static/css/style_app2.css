@@ -17,6 +17,7 @@ body {
     font-size: 24px;
     border: 2px solid #ccc;
     cursor: pointer;
+    border-radius: 4px;
 }
 
 .cell:hover{
