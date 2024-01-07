@@ -3,6 +3,9 @@ let board = ['','','',
              '','',''];
 
 
+//CURRENTLY, PUTTING 3 in MAKE MOVE DOESNT MAKE THE THIRD CELL TURN INTO X DONT KNOW WHY START HERE 
+
+
 let currentPlayer = 'X';
 
 function makeMove(index){
@@ -29,8 +32,7 @@ function swapPlayer() {
 
 
 function updateDisplay() {
-    document.getElementById('display').value = board.join('');
+    document.getElementById('display').value = board;
 }
-
 updateBoard();
 
