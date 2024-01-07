@@ -6,6 +6,23 @@ body {
     background-size: cover;
     color: white;
     font-weight: bold;
+    margin-top: 15px;
+}
+
+button { 
+    
+    padding: 10px 20px; 
+    font-size: 16px;   
+    background-color: #4CAF50; 
+    color: white;
+    border: none;
+    border-radius: 5px; 
+    cursor: pointer; 
+    margin: 20px auto;
+    justify-content: center;
+
+    display: none;
+
 }
 
 #alert1{
