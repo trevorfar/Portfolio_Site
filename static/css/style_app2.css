@@ -1,25 +1,45 @@
 body {
     font-family: 'Arial', sans-serif;
     text-align: center;
-    margin: 50px;
+    background-image: url('../Images/ticTacToe.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
+    font-weight: bold;
 }
 
+#alert1{
+    margin-bottom: 20px;
+    margin-top: 20px;
+    font-weight: bold;
+    color: black;
+    display: none;
+}
 
 #board {
     display: grid;
-    grid-template-columns: repeat(3, 100px);
-    grid-gap: 5px;
+    grid-template-columns: repeat(3, 75px);
+    grid-gap: 10px;
+    background-color: darkgray; 
+    width: fit-content; 
+    height: fit-content; 
+    margin: 20px auto;
+    padding: 10px;
     justify-content: center;
-}
+    border-radius: 5px;
+}   
+
 .cell {
-    width: 100px;
-    height: 100px;
+    width: 75px;
+    height: 75px;
     font-size: 24px;
-    border: 2px solid #ccc;
+    border: 1px solid black;
     cursor: pointer;
     border-radius: 4px;
+    background-color: grey;
+    line-height: 75px; 
 }
 
 .cell:hover{
-    background-color: red;
+    background-color: rgb(81, 80, 80)
 }

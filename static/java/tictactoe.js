@@ -2,11 +2,16 @@ let board = ['','','',
              '','','',
              '','',''];
 
-
-//CURRENTLY, PUTTING 3 in MAKE MOVE DOESNT MAKE THE THIRD CELL TURN INTO X DONT KNOW WHY START HERE 
-
-
 let currentPlayer = 'X';
+
+document.addEventListener("DOMContentLoaded", function() {
+   
+    initializePage();
+});
+
+function initializePage() {
+    toggleVisibility();
+}
 
 function makeMove(index){
     if(board[index] == '' ){
@@ -14,7 +19,6 @@ function makeMove(index){
         updateBoard();
         swapPlayer();
         checkWinner();
-        updateDisplay();
     }
 }
 
@@ -30,29 +34,32 @@ function swapPlayer() {
     currentPlayer = (currentPlayer === 'X') ? 'O' : 'X';
 }
 
-function checkWinner(){
-     if ((board[2] !== '' && board[4] !== '' && board[6] !== '' && board[2] == board[4] && board[2] == board[6])){
-        alert("HELLO");
-    }
-    else if ((board[0] !== '' && board[4] !== '' && board[8] !== '' && board[0] == board[4] && board[0] == board[8])){
-        alert("HELLO");
-    }
-    else{
-        for(let i = 0; i < board.length; i ++){ 
-            if ((board[i] !== '' && board[i+1] !== '' && board[i+2] !== '' && board[i] == board[i+1] && board[i] == board[i+2])){
-                alert("HELLO");
-            }  
-            else if ((board[i] !== '' && board[i+3] !== '' && board[i+6] !== '' && board[i] == board[i+3] && board[i] == board[i+6])){
-                alert("HELLO");
+function checkWinner() {
+    if ((board[2] !== '' && board[4] !== '' && board[6] !== '' && board[2] == board[4] && board[2] == board[6]) ||
+        (board[0] !== '' && board[4] !== '' && board[8] !== '' && board[0] == board[4] && board[0] == board[8])) {
+        toggleVisibility(); 
+    } else {
+        for (let i = 0; i < board.length; i++) {
+            if ((board[i] !== '' && board[i + 1] !== '' && board[i + 2] !== '' && board[i] == board[i + 1] && board[i] == board[i + 2]) ||
+                (board[i] !== '' && board[i + 3] !== '' && board[i + 6] !== '' && board[i] == board[i + 3] && board[i] == board[i + 6])) {
+                toggleVisibility(); 
             }
-            
-            
+        }
     }
-}
 }
 
-function updateDisplay() {
-    document.getElementById('display').value = board;
-}
+
+
+var alert1 = document.getElementById("alert1");
+    function toggleVisibility() {
+        var previousPlayer = (currentPlayer === 'X') ? 'O' : 'X';
+        alert1.textContent = previousPlayer + " won!";
+        alert1.style.display = (alert1.style.display === "none") ? "block" : "none";
+    }
+
+   
+    
+
+
 updateBoard();
 
