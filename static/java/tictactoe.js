@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 function initializePage() {
     toggleVisibility();
+    
     toggleButton();
 }
 

@@ -15,7 +15,7 @@ Session(app)
 expHistory = []
 resHistory = []
 
-
+#Establish DataBase Connection
 def get_db_connection():
     conn = sqlite3.connect('database.db')
     conn.row_factory = sqlite3.Row
@@ -31,9 +31,11 @@ def evaluateExpression(expression):
     except Exception as e:
         return None, str(e)
     
+#Clear for Calculator
 def clear():
    return '', None
 
+#clears any equations in the calculator
 def clearHistory():
    return [], []
 
