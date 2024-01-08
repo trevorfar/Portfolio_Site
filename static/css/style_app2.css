@@ -5,7 +5,6 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     color: white;
-    font-weight: bold;
     margin-top: 15px;
 }
 
@@ -73,5 +72,8 @@ button {
 }
 
 .description-container p {
-    color: #333; 
+    color: black; 
+    text-align: left;
+    font-size: 16;
+    font-weight: 10;
 }
