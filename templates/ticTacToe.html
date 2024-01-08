@@ -5,26 +5,40 @@
 {% block content %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style_app2.css') }}">
     
-    <div id="alert1"> 
-    </div>
-          
-          <div id="board">
-            <div class="cell" onclick ="makeMove(0)"></div>
-            <div class="cell" onclick ="makeMove(1)"></div>  
-            <div class="cell" onclick ="makeMove(2)"></div>
-            <div class="cell" onclick ="makeMove(3)"></div>
-            <div class="cell" onclick ="makeMove(4)"></div>
-            <div class="cell" onclick ="makeMove(5)"></div>
-            <div class="cell" onclick ="makeMove(6)"></div>
-            <div class="cell" onclick ="makeMove(7)"></div>
-            <div class="cell" onclick ="makeMove(8)"></div>
-         </div>
+    <!-- Description Container and Tic-Tac-Toe Board -->
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Description Container (Left Column) -->
+            <div class="col-md-6 mb-4">
+                <div class="description-container p-4">
+                    <h3>Your Application Description</h3>
+                    <p>Provide a brief description of your application here.</p>
+                </div>
+            </div>
 
-         <div class="content">
-          <button id="play-again-button" type="button" onclick="resetGame()">Play Again</button>
+            <!-- Tic-Tac-Toe Board (Right Column) -->
+            <div class="col-md-6">
+                <div id="alert1"></div>
+                <div id="board" class="d-grid grid-template-columns: repeat(3, 75px); grid-gap: 10px; background-color: darkgray; width: fit-content; height: fit-content; margin: 20px auto; padding: 10px; justify-content: center; border-radius: 5px;">
+                    <!-- Your Tic Tac Toe board cells go here -->
+                    <div class="cell" onclick="makeMove(0)"></div>
+                    <div class="cell" onclick="makeMove(1)"></div>
+                    <div class="cell" onclick="makeMove(2)"></div>
+                    <div class="cell" onclick="makeMove(3)"></div>
+                    <div class="cell" onclick="makeMove(4)"></div>
+                    <div class="cell" onclick="makeMove(5)"></div>
+                    <div class="cell" onclick="makeMove(6)"></div>
+                    <div class="cell" onclick="makeMove(7)"></div>
+                    <div class="cell" onclick="makeMove(8)"></div>
+                </div>
+                <div class="content">
+                    <button id="play-again-button" type="button" onclick="resetGame()">Play Again</button>
+                </div>
+            </div>
         </div>
-        
-       
-  <script src="{{ url_for('static', filename='java/tictactoe.js') }}"></script>
+    </div>
 
+   
+
+    <script src="{{ url_for('static', filename='java/tictactoe.js') }}"></script>
 {% endblock %}
