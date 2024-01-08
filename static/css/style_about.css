@@ -5,17 +5,17 @@ h1 {
 
 
 p {
-    text-align: center;
+    text-align: left;
     color: black;
     }
     .aboutContainer {
-        margin-top: 50px; /* Adjust the margin as needed */
+        margin-top: 50px; 
         padding: 20px;
         height: 360px;
         width: 80%;
-        background-color: #ffffff; /* Set the background color as desired */
-        border-radius: 8px; /* Optional: Add rounded corners */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle box shadow */
+        background-color: #ffffff; 
+        border-radius: 8px; 
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
     }
 body{
   
