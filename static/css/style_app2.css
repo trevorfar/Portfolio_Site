@@ -1,15 +1,10 @@
 body {
-    font-family: 'Arial', sans-serif;
-    text-align: center;
     background-image: url('../Images/ticTacToe.jpg');
     background-repeat: no-repeat;
     background-size: cover;
-    color: white;
-    margin-top: 15px;
 }
 
 button { 
-    
     padding: 10px 20px; 
     font-size: 16px;   
     background-color: #4CAF50; 
@@ -54,6 +49,11 @@ button {
     border-radius: 4px;
     background-color: grey;
     line-height: 75px; 
+    text-align: center;
+    font-weight: bold;
+    color: white;
+    font-family: 'Arial', sans-serif;
+
 }
 
 .cell:hover{
@@ -74,6 +74,4 @@ button {
 .description-container p {
     color: black; 
     text-align: left;
-    font-size: 16;
-    font-weight: 10;
 }

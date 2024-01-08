@@ -21,7 +21,6 @@
 }
 
 
-
 body{
     height: 600px;
     background-image: url('../Images/calculatorBackground.png');
@@ -76,5 +75,6 @@ body{
 }
 
 .description-container p {
-    color: #333; 
+    color: black; 
+    text-align: left
 }
