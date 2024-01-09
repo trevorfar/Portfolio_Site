@@ -3,20 +3,25 @@
  body{
     margin: 0;
     padding: 0;
-    height: 720px;
+    height: auto;
     background-image: url('../Images/whiteAndGrey.jpg');
     background-repeat: no-repeat;
     background-size: cover;
  }
 
  
-    .content {
-
+    .parallax {
+        background-image: url('../Images/ticTacToe.png');
+        height: 500px;
+        width: 80%;
         margin-top: 20px;
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
     }
 
     .textContainer {
-        margin-top: 50px; 
         padding: 20px;
         height: auto;
         width: 80%;
