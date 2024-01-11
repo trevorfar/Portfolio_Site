@@ -25,6 +25,7 @@ button {
     font-weight: bold;
     color: black;
     display: none;
+    text-align: center;
 }
 
 #board {
@@ -75,3 +76,4 @@ button {
     color: black; 
     text-align: left;
 }
+
