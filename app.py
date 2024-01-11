@@ -1,14 +1,12 @@
 import sqlite3
 from flask import Flask, render_template, request, url_for, flash, redirect, jsonify, session
 from flask_session import Session
-from werkzeug.exceptions import abort
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
 
 app = Flask(__name__, static_url_path='/static')
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'fallback_secret_key')
 app.config['SESSION_TYPE'] = 'filesystem'  # Use 'filesystem' for a simple setup
 Session(app)
 
