@@ -8,6 +8,7 @@ load_dotenv()
 
 app = Flask(__name__, static_url_path='/static')
 app.config['SESSION_TYPE'] = 'filesystem'  # Use 'filesystem' for a simple setup
+
 Session(app)
 
 expHistory = []
@@ -47,6 +48,38 @@ def index():
     conn = get_db_connection()
     conn.close()
     return render_template('index.html')
+
+
+@app.route('/app3')
+def app3():
+    return render_template('app3.html')
+
+@app.route('/gcd', methods=['GET'])
+def gcd():
+    if request.method=='GET':
+        input1 = request.args['input1']
+        input2 = request.args['input2']
+
+        intInput1 = int(input1)
+        intInput2 = int(input2)
+
+        # temp = 0
+        
+        # if(intInput1 < intInput2):
+        #     temp = intInput1
+        #     intInput1 = intInput2
+        #     intInput2 = temp
+        r2 = 0
+
+        while(intInput2 != 0):
+            r = intInput1 % intInput2
+            intInput1 = intInput2
+            intInput2 = r
+            if(r != 0):
+                r2 = r
+
+        result = r2
+    return render_template('app3.html', result=result)
 
 
 
@@ -91,3 +124,6 @@ def calculate():
 @app.route('/ticTacToe')
 def ticTacToe():
     return render_template('ticTacToe.html', )
+
+if __name__ == '__main__':
+    app.run(debug=True)
