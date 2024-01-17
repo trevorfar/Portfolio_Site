@@ -136,5 +136,3 @@ def calculate():
 def ticTacToe():
     return render_template('ticTacToe.html', )
 
-if __name__ == '__main__':
-    app.run(debug=True)
