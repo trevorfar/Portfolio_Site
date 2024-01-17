@@ -5,7 +5,6 @@
 {% block content %}
 
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style_app3.css') }}">
-<script src="{{ url_for('static', filename='java/discrete.js') }}"></script>
 
 
     <form id="inputForm" action="/gcd" method="GET">
@@ -26,10 +25,10 @@
             <div>
                 <input type="number" name="input2" placeholder="Input 2" value="{{ input2 }}">
             </div>
-            <div>
-                <button type="button" > Clear</button>
+            <div id="Clear">
+                <button type="button" id ="clearButton"> Clear</button>
             </div>
         </div>
     </form>
-
+    <script src="{{ url_for('static', filename='java/discrete.js') }}"></script>
 {% endblock %}

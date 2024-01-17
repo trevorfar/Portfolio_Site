@@ -1,4 +1,4 @@
-import sqlite3
+import sqlite3, requests
 from flask import Flask, render_template, request, url_for, flash, redirect, jsonify, session
 from flask_session import Session
 import os
@@ -136,3 +136,15 @@ def calculate():
 def ticTacToe():
     return render_template('ticTacToe.html', )
 
+
+@app.route('/app4')
+def app4():
+    api_url = "https://jsonplaceholder.typicode.com/todos/1"
+    response = requests.get(api_url)
+    response.json()
+
+    if response.status_code == 200:
+        data = response.json()
+
+
+    return render_template('app4.html')

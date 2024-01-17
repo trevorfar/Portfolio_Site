@@ -10,6 +10,10 @@
 
 }
 
+#Clear {
+    padding-top: 15px;
+}
+
 .flexContainer{
     display: flex;
     justify-content: center;
@@ -18,3 +22,5 @@
     padding: 35px;
 
 }
+
+.
