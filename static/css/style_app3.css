@@ -1,0 +1,20 @@
+#inputForm textarea {
+    resize: none;
+}
+
+.containerCalculate {
+    display: flex;
+    padding-top: 50px;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.flexContainer{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 35px;
+
+}

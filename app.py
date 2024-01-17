@@ -50,26 +50,33 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/app3')
-def app3():
-    return render_template('app3.html')
+@app.route('/discrete')
+def discrete():
+    return render_template('discrete.html')
 
 @app.route('/gcd', methods=['GET'])
 def gcd():
     if request.method=='GET':
-        input1 = request.args['input1']
-        input2 = request.args['input2']
+        try: 
+            input1 = request.args['input1']
+            input2 = request.args['input2']
 
-        intInput1 = int(input1)
-        intInput2 = int(input2)
-
-        # temp = 0
+            intInput1 = float(input1)
+            intInput2 = float(input2)
         
-        # if(intInput1 < intInput2):
-        #     temp = intInput1
-        #     intInput1 = intInput2
-        #     intInput2 = temp
-        r2 = 0
+        except ValueError:
+            return render_template('discrete.html', result="Out of Bounds", input1=input1, input2=input2)
+        
+        if(intInput1 == 0 or intInput2 == 0):
+            return render_template('discrete.html', result="Can't take GCD with 0", input1=input1, input2=input2)
+        r2 = 1
+       
+
+
+        if(intInput1 % intInput2 == 0):
+            result = min(intInput1, intInput2)
+            return render_template('discrete.html', result=int(result), input1=input1, input2=input2)
+
 
         while(intInput2 != 0):
             r = intInput1 % intInput2
@@ -79,7 +86,11 @@ def gcd():
                 r2 = r
 
         result = r2
-    return render_template('app3.html', result=result)
+        return render_template('discrete.html', result=int(result), input1=input1, input2=input2)
+    return render_template('discrete.html', result="", input1="")
+
+    
+
 
 
 

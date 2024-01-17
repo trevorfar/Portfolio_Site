@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %} Discrete Mathematics Functions {% endblock %}
+
+
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style_app3.css') }}">
+<script src="{{ url_for('static', filename='java/discrete.js') }}"></script>
+
+
+    <form id="inputForm" action="/gcd" method="GET">
+        <div class="containerCalculate">
+            <button type="submit">Calculate GCD</button>
+        </div>
+
+        <div class="flexContainer">
+
+            <div>
+                <textarea id="display" readonly style="text-align: right"> {{ result }} </textarea>
+            </div>
+
+            <div>
+                <input type="number" name="input1" placeholder="Input 1" value = "{{ input1 }}">
+            </div>
+
+            <div>
+                <input type="number" name="input2" placeholder="Input 2" value="{{ input2 }}">
+            </div>
+            <div>
+                <button type="button" > Clear</button>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}
