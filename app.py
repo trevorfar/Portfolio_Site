@@ -1,4 +1,5 @@
-import sqlite3, requests
+import sqlite3, json
+import requests
 
 from flask import Flask, render_template, request, url_for, flash, redirect, jsonify, session
 from flask_session import Session
@@ -142,14 +143,39 @@ def ticTacToe():
 def app4():
     return render_template('app4.html')
 
+
+def printResp(obj):
+    text = json.dumps(obj, sort_keys=True, indent=4)
+    print(text)
+
+
+# @app.route('/testPrice', methods=['GET'])
+# def getPrice():
+#     params = {
+            
+#             "function": function,
+#             "symbol": stock_symbol,
+#             "apikey": api_key,
+#         }
+
+#     response = requests.get("http://api.open-notify.org/astros.json")
+
+
+
+#     printResp(response.json())    
+#     return (str(response.status_code))
+
+
+
+
+
+
 @app.route('/getPrice', methods = ['GET'])
 def getStockPrice():
-    api_key = os.environ.get('API_KEY')
-    
 
+    api_key = os.environ.get('API_KEY')
     stock_symbol = request.args.get('symbol')
     base_url = "https://www.alphavantage.co/query"
-    print(stock_symbol)
     function = "GLOBAL_QUOTE"    
 
 # Construct the API request URL
@@ -160,6 +186,8 @@ def getStockPrice():
     }
     
     response = requests.get(base_url, params=params)
+    print(response.status_code)
+    printResp(response.json())
 
     if response.status_code == 200:
         data = response.json()
