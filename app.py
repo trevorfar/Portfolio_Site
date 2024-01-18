@@ -148,25 +148,12 @@ def printResp(obj):
     text = json.dumps(obj, sort_keys=True, indent=4)
     print(text)
 
-
-# @app.route('/testPrice', methods=['GET'])
-# def getPrice():
-#     params = {
-            
-#             "function": function,
-#             "symbol": stock_symbol,
-#             "apikey": api_key,
-#         }
-
-#     response = requests.get("http://api.open-notify.org/astros.json")
-
-
-
-#     printResp(response.json())    
-#     return (str(response.status_code))
+last_stock_symbol = None
 
 @app.route('/getPrice', methods = ['GET'])
 def getStockPrice():
+
+    global last_stock_symbol
 
     api_key = os.environ.get('API_KEY')
     stock_symbol = request.args.get('symbol')
@@ -174,6 +161,9 @@ def getStockPrice():
     if not stock_symbol:
         return "Please provide a valid stock symbol"
 
+    if stock_symbol == last_stock_symbol:
+        return "Please provide a new stock symbol"
+    
     base_url = "https://www.alphavantage.co/query"
     function = "GLOBAL_QUOTE"    
 
@@ -190,14 +180,22 @@ def getStockPrice():
     printResp(response.json())
 
     if response.status_code == 200:
-        data = response.json()
-        print(data)
-        if "Global Quote" in data:
-            return data["Global Quote"]["05. price"]
-        else:
-            return "Symbol not found"
-    else:
-        return f"Error: {response.status_code}"
+        try:    
+            data = response.json()
+            print(data)
+
+            if "Global Quote" in data:
+                global_quote = data["Global Quote"]
+                last_stock_symbol = stock_symbol
+
+                if not global_quote:
+                    return "Empty response for the given symbol. It may not be a valid stock symbol."
+                
+                return  render_template('app4.html', price=data["Global Quote"]["05. price"], title = data["Global Quote"]["01. symbol"], change = data["Global Quote"]["09. change"])
+            else:
+                return "symbol not found"
+        except json.JSONDecodeError: 
+            return f"Error: {response.status_code}"
     
    
 
