@@ -1,4 +1,5 @@
 import sqlite3, requests
+
 from flask import Flask, render_template, request, url_for, flash, redirect, jsonify, session
 from flask_session import Session
 import os
@@ -45,6 +46,7 @@ currentPlayer = 'X'
 
 @app.route('/')
 def index():
+
     conn = get_db_connection()
     conn.close()
     return render_template('index.html')
@@ -136,15 +138,38 @@ def calculate():
 def ticTacToe():
     return render_template('ticTacToe.html', )
 
-
 @app.route('/app4')
 def app4():
-    api_url = "https://jsonplaceholder.typicode.com/todos/1"
-    response = requests.get(api_url)
-    response.json()
+    return render_template('app4.html')
+
+@app.route('/getPrice', methods = ['GET'])
+def getStockPrice():
+    api_key = os.environ.get('API_KEY')
+    
+
+    stock_symbol = request.args.get('symbol')
+    base_url = "https://www.alphavantage.co/query"
+    print(stock_symbol)
+    function = "GLOBAL_QUOTE"    
+
+# Construct the API request URL
+    params = {
+        "function": function,
+        "symbol": stock_symbol,
+        "apikey": api_key,
+    }
+    
+    response = requests.get(base_url, params=params)
 
     if response.status_code == 200:
         data = response.json()
+        print(data)
+        if "Global Quote" in data:
+            return data["Global Quote"]["05. price"]
+        else:
+            return "Symbol not found"
+    else:
+        return f"Error: {response.status_code}"
+    
+   
 
-
-    return render_template('app4.html')

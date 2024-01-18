@@ -10,8 +10,31 @@
 
 }
 
+.description-container {
+    background-color: #f8f9fa; 
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+.description-container h3 {
+    color: #007bff; 
+}
+
+.description-container p {
+    color: black; 
+    text-align: left;
+}
+
 #Clear {
     padding-top: 15px;
+}
+
+.generalContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
 }
 
 .flexContainer{
@@ -23,4 +46,3 @@
 
 }
 
-.
