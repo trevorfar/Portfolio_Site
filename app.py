@@ -165,16 +165,15 @@ def printResp(obj):
 #     printResp(response.json())    
 #     return (str(response.status_code))
 
-
-
-
-
-
 @app.route('/getPrice', methods = ['GET'])
 def getStockPrice():
 
     api_key = os.environ.get('API_KEY')
     stock_symbol = request.args.get('symbol')
+
+    if not stock_symbol:
+        return "Please provide a valid stock symbol"
+
     base_url = "https://www.alphavantage.co/query"
     function = "GLOBAL_QUOTE"    
 
@@ -186,6 +185,7 @@ def getStockPrice():
     }
     
     response = requests.get(base_url, params=params)
+
     print(response.status_code)
     printResp(response.json())
 

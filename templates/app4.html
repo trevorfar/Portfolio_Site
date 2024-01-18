@@ -3,16 +3,18 @@
 {% block title %} Api App {% endblock %}
 
 {% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style_apiApp.css') }}">
 
 <form id="stockInputForm" action="/getPrice" method="GET">
     <div>
-        <input type="text" name="stockQuery" placeholder="Enter Symbol">
+        <input type="text" pattern="[A-Za-z]+" name="symbol" id = "stockQuery" placeholder="Enter Symbol" maxlength="5">
     </div>
 </form>
 
 
 
 
+<script src="{{ url_for('static', filename='java/apiLookup.js') }}"></script>
 
 
 {% endblock %}
