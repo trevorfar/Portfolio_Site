@@ -5,6 +5,8 @@ from flask import Flask, render_template, request, url_for, flash, redirect, jso
 from flask_session import Session
 import os
 from dotenv import load_dotenv
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.sql import func
 
 load_dotenv()
 
@@ -16,11 +18,34 @@ Session(app)
 expHistory = []
 resHistory = []
 
-#Establish DataBase Connection
-def get_db_connection():
-    conn = sqlite3.connect('database.db')
-    conn.row_factory = sqlite3.Row
-    return conn
+
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+app.config['SQLALCHEMY_DATABASE_URI'] =\
+        'sqlite:///' + os.path.join(basedir, 'database.db')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+
+class Student(db.Model):
+    age = db.Column(db.Integer, primary_key=True)
+    bio = db.Column(db.Text)
+
+    def __repr__(self):
+        return f'<Student {self.firstname}>'
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def evaluateExpression(expression):
     try:
@@ -47,9 +72,6 @@ currentPlayer = 'X'
 
 @app.route('/')
 def index():
-
-    conn = get_db_connection()
-    conn.close()
     return render_template('index.html')
 
 
@@ -150,6 +172,8 @@ def printResp(obj):
 
 last_stock_symbol = None
 
+
+
 @app.route('/getPrice', methods = ['GET'])
 def getStockPrice():
 
@@ -196,6 +220,14 @@ def getStockPrice():
                 return "symbol not found"
         except json.JSONDecodeError: 
             return f"Error: {response.status_code}"
+        
+
+@app.route('/databaseApp', methods=['GET', 'POST'])
+def databaseApp():
+    return render_template('databaseApp.html')
+
+
+
     
    
 
