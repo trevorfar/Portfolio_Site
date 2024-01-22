@@ -3,22 +3,25 @@ from flask_sqlalchemy import SQLAlchemy
 import os
 from dotenv import load_dotenv
 
-# Create the Flask application
-app = Flask(__name__)
-app.secret_key = os.environ.get('secret_key')
-
-# Configure Flask-SQLAlchemy
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
-
 # Create the SQLAlchemy object
-db = SQLAlchemy(app)
+db = SQLAlchemy()
 
-# Import blueprints and register them with the app
-from .auth import auth
-from .main import main
+def create_app():
+    app = Flask(__name__)
 
-app.register_blueprint(auth, url_prefix='/auth')
-app.register_blueprint(main, url_prefix='')
+    app.secret_key = os.environ.get('secret_key')
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 
-if __name__ == '__main__':
-    app.run(debug=True)
+    db.init_app(app)
+
+    # blueprint for auth routes in our app
+    from .auth import auth
+    app.register_blueprint(auth, url_prefix='/auth')
+
+    # blueprint for non-auth parts of app
+    from .main import main 
+    app.register_blueprint(main, url_prefix='')
+
+    return app
+
+
