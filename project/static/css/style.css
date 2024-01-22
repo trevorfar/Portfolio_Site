@@ -1,0 +1,44 @@
+
+.navbar-nav .nav-item .nav-link{
+    margin: 0 5px;
+    color: black !important;
+    transition: color 0.3s ease; 
+  }
+  .navbar {
+    background-color: transparent !important ; 
+    border-bottom: 1px solid black;
+    width: 40%;
+    margin: 0 auto;
+    z-index: 1000;
+  }
+  
+
+  .navbar-nav {
+    width: 100%;
+  }
+  .navbar-nav  .nav-item:hover .nav-link{
+  color: darkgrey !important; 
+
+  }
+  .dropdown:hover > .dropdown-menu {
+  display: block;
+  }
+
+  .dropdown-menu{
+    top: 96% !important; 
+  }
+
+  .dropdown > .dropdown-toggle:active {
+  /*Without this, clicking will make it sticky*/
+  pointer-events: none;
+  }
+  .footer{
+    width: 100%;
+  }
+  .flex-grow-1{
+    flex-grow: 1;
+  }
+  
+  #Footer{
+    text-align: center;
+  }
