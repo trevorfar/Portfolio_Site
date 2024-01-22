@@ -1,5 +1,6 @@
 import sqlite3, json
 import requests
+from . import db
 from flask import Flask, render_template, request, url_for, flash, redirect, jsonify, session, Blueprint
 from flask_session import Session
 import os
@@ -42,6 +43,11 @@ currentPlayer = 'X'
 @main.route('/')
 def index():
     return render_template('index.html')
+
+@main.route('/profile')
+def profile():
+    return render_template('profile.html')
+
 
 
 @main.route('/discrete')
