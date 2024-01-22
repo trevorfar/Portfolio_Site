@@ -10,6 +10,7 @@ from sqlalchemy.sql import func
 
 load_dotenv()
 
+
 main = Blueprint('main', __name__, url_prefix='/main')
 
 
