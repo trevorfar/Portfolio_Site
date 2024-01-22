@@ -1,19 +1,21 @@
+import sqlite3, json
+import requests
 
-from flask import Flask, Blueprint
+from flask import Flask, render_template, request, url_for, flash, redirect, jsonify, session, Blueprint
+from flask_session import Session
 import os
 from dotenv import load_dotenv
-from auth import auth
-from main import main
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.sql import func
 
 load_dotenv()
 
-app = Flask(__name__, static_url_path='/static')
-app.config['SESSION_TYPE'] = 'filesystem'  # Use 'filesystem' for a simple setup
+main = Blueprint('main', __name__)
+
 
 
 expHistory = []
 resHistory = []
-
 
 
 def evaluateExpression(expression):
@@ -37,18 +39,16 @@ def clearHistory():
 currentPlayer = 'X'
 
 
-
-
-@app.route('/')
+@main.route('/')
 def index():
     return render_template('index.html')
 
 
-@app.route('/discrete')
+@main.route('/discrete')
 def discrete():
     return render_template('discrete.html')
 
-@app.route('/gcd', methods=['GET'])
+@main.route('/gcd', methods=['GET'])
 def gcd():
     if request.method=='GET':
         try: 
@@ -85,20 +85,17 @@ def gcd():
 
     
 
-
-
-
-@app.route('/about')
+@main.route('/about')
 def about():
     return render_template('about.html')
 
 
-@app.route('/calculator')
+@main.route('/calculator')
 def calculator():
     return render_template('calculator.html')
 
 #Sends the response as POST. All works off expression string. It returns an error if it's not a valid string NEEDS KEYBOARD SUPPORT
-@app.route('/calculate', methods=['POST'])
+@main.route('/calculate', methods=['POST'])
 def calculate():
     expression = request.form.get('expression')
     expHistory = session.get('expHistory', [])
@@ -126,11 +123,11 @@ def calculate():
         expHistory=expHistory, resHistory=resHistory)
 
 
-@app.route('/ticTacToe')
+@main.route('/ticTacToe')
 def ticTacToe():
     return render_template('ticTacToe.html', )
 
-@app.route('/app4')
+@main.route('/app4')
 def app4():
     return render_template('app4.html')
 
@@ -142,8 +139,7 @@ def printResp(obj):
 last_stock_symbol = None
 
 
-
-@app.route('/getPrice', methods = ['GET'])
+@main.route('/getPrice', methods = ['GET'])
 def getStockPrice():
 
     global last_stock_symbol
@@ -191,7 +187,7 @@ def getStockPrice():
             return f"Error: {response.status_code}"
         
 
-@app.route('/databaseApp', methods=['GET', 'POST'])
+@main.route('/databaseApp', methods=['GET', 'POST'])
 def databaseApp():
     return render_template('databaseApp.html')
 
@@ -200,5 +196,3 @@ def databaseApp():
     
    
 
-if __name__ == '__main__':
-    app.run(debug=True)

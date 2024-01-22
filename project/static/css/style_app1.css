@@ -1,0 +1,74 @@
+#CalculatorForm {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+    max-width: 300px;   
+    padding-top: 15px;
+    margin: 30px auto 0 auto;
+    background-color: darkgray; 
+    padding: 10px; 
+    border-radius: 10px; 
+}
+
+
+#display{
+    border-radius: 20px;
+    border: 1px solid black;
+    overflow: hidden; 
+}
+
+
+body{
+    height: 600px;
+    background-image: url('../Images/calculatorBackground.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+ }
+
+#CalculatorForm textarea{
+    grid-column: span 4;
+    padding: 10px;
+    height: 60px;
+    font-size: 16px;
+    text-align: right;
+    resize: none;
+}
+
+#CalculatorForm button {
+    font-size: 16px;
+    padding: 10px;
+    background-color: grey;
+    color: white;
+    border: 1px solid black;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+#CalculatorForm button:hover{
+    background-color: rgb(81, 80, 80)
+}
+
+#CalculatorForm button[type="submit"]{
+    background-color: blue;
+    border: 1px solid blue;
+}
+
+#CalculatorForm button[type="submit"]:hover{
+    background-color: rgb(0, 0, 95);
+}
+
+.description-container {
+    background-color: #f8f9fa; 
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+.description-container h3 {
+    color: #007bff; 
+}
+
+.description-container p {
+    color: black; 
+    text-align: left
+}

@@ -1,0 +1,56 @@
+body {
+    background-image: url('../Images/whiteAndGrey.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+}
+
+
+#inputForm textarea {
+    resize: none;
+}
+
+.containerCalculate {
+    display: flex;
+    padding-top: 50px;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.description-container {
+    background-color: #f8f9fa; 
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+.description-container h3 {
+    color: #007bff; 
+}
+
+.description-container p {
+    color: black; 
+    text-align: left;
+}
+
+#Clear {
+    padding-top: 15px;
+}
+
+.generalContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.flexContainer{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 35px;
+
+}
+

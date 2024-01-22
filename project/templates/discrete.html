@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %} Discrete Mathematics Functions {% endblock %}
+
+
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style_app3.css') }}">
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- Description Container (Left Column) -->
+        <div class="col-md-6 mb-4">
+            <div class="description-container p-4">
+                <h3>Greatest Common Divisor Calculator</h3>
+            <p>This project stemmed from me wanting to explore Discrete Mathematics and it's applications in coding.
+                </p>
+                <p>
+                It's a simple starter project, but I have plans to create an inverse calculator. The inverse calculator essentially works by back stepping through the steps of a GCD operation, 
+                so I thought it made sense to make this application first.
+            </p>
+                <p>
+                This application works by initializing a while loop that iterates until my input is equal to 0. I first find the remainder, or the modulus, of my two inputs by the moduluo function, 
+                then I set my first input, or my greatest, equal to my second, and my second equal to the found modulus. This essentially shifts the values to the left after each step, following 
+                conventional Euclidean algorithm architecture.
+                </p>
+            </div>
+        </div>
+
+
+
+    <div class="col-md-6">
+
+    <form id="inputForm" action="/gcd" method="GET">
+        <div class="containerCalculate">
+            <button type="submit">Calculate GCD</button>
+        </div>
+
+        <div class="flexContainer">
+            <div>
+                <textarea id="display" readonly style="text-align: right"> {{ result }} </textarea>
+            </div>
+            <div>
+                <input type="number" name="input1" placeholder="Enter first number" value="{{ input1 }}">
+            </div>
+            <div>
+                <input type="number" name="input2" placeholder="Enter second number" value="{{ input2 }}">
+            </div>
+            <div id="Clear">
+                <button type="button" id="clearButton"> Clear</button>
+            </div>
+        </div>
+    </form>
+</div>
+</div>
+</div>
+
+
+
+<script src="{{ url_for('static', filename='java/discrete.js') }}"></script>
+{% endblock %}
