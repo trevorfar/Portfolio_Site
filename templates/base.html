@@ -20,11 +20,13 @@
 
             <ul class="navbar-nav mx-auto d-flex justify-content-center">
             <li class="nav-item ">
-                <a class="nav-link" href="{{url_for('main.index')}}">Home</a>
+                <a class="nav-link" href="{{url_for('index')}}">Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{url_for('main.about')}}">About</a>
+                <a class="nav-link" href="{{url_for('about')}}">About</a>
             </li>
+            
+        
           
            
             <li class="nav-item dropdown">
@@ -32,9 +34,9 @@
               href="#">Projects</a>
               <div class="dropdown-menu" aria-labelledby="contactsDropdown">
 
-                <a class="dropdown-item"  href="{{url_for('main.calculator')}}">Calculator</a>
-                <a class="dropdown-item" href="{{url_for('main.ticTacToe')}}">Tic-Tac-Toe</a>
-                <a class="dropdown-item" href="{{url_for('main.discrete')}}">Discrete Functions</a>
+                <a class="dropdown-item"  href="{{url_for('calculator')}}">Calculator</a>
+                <a class="dropdown-item" href="{{url_for('ticTacToe')}}">Tic-Tac-Toe</a>
+                <a class="dropdown-item" href="{{url_for('discrete')}}">Discrete Functions</a>
                 <a class="dropdown-item" href="#">Coming Soon!</a>
                 <a class="dropdown-item" href="#">Coming Soon!</a>
 
@@ -43,12 +45,26 @@
         
             <li class="nav-item dropdown">
               <a class="nav-link" id="contactsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" 
-              href="{{url_for('main.index')}}">Contact</a>
+              href="{{url_for('index')}}">Contact</a>
               <div class="dropdown-menu" aria-labelledby="contactsDropdown">
                 <a class="dropdown-item" target="_blank" href="https://www.linkedin.com/in/trevor-farias-454aa2278">LinkedIn</a>
                 <a class="dropdown-item" href="mailto:trevor_farias@yahoo.com">Email</a>
               </div>
             </li>
+
+             <li class="nav-item">
+              <a class="nav-link" href="{{url_for('login')}}">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{url_for('signup')}}">Sign up</a>
+        </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{url_for('logout')}}">Logout</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{{url_for('profile')}}">Profile</a>
+      </li> 
             </ul>
         </div>
     </nav>

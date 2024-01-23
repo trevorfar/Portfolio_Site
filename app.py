@@ -1,18 +1,50 @@
-
-from flask import Flask, Blueprint
+import sqlite3, json
+import requests
+from flask import Flask, render_template, request, url_for, flash, redirect, jsonify, session, Blueprint
+from flask_session import Session
 import os
+from flask_login import LoginManager, UserMixin, login_user
 from dotenv import load_dotenv
-from auth import auth
-from main import main
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.sql import func
+
+
+app = Flask(__name__)
+app.secret_key = os.environ.get('secret_key')
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite"
+
+db = SQLAlchemy()
+
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 load_dotenv()
 
-app = Flask(__name__, static_url_path='/static')
-app.config['SESSION_TYPE'] = 'filesystem'  # Use 'filesystem' for a simple setup
-
-
 expHistory = []
 resHistory = []
+
+# Create user model
+class Users(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(250), unique=True,
+                         nullable=False)
+    password = db.Column(db.String(250),
+                         nullable=False)
+ 
+@login_manager.user_loader
+def loader_user(user_id):
+    return Users.query.get(user_id)
+
+
+
+
+# Initialize app with extension
+db.init_app(app)
+# Create database within app context
+ 
+with app.app_context():
+    db.create_all()
+
 
 
 
@@ -37,11 +69,14 @@ def clearHistory():
 currentPlayer = 'X'
 
 
-
-
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/profile')
+def profile():
+    return render_template('profile.html')
+
 
 
 @app.route('/discrete')
@@ -84,9 +119,6 @@ def gcd():
     return render_template('discrete.html', result="", input1="")
 
     
-
-
-
 
 @app.route('/about')
 def about():
@@ -142,7 +174,6 @@ def printResp(obj):
 last_stock_symbol = None
 
 
-
 @app.route('/getPrice', methods = ['GET'])
 def getStockPrice():
 
@@ -189,16 +220,38 @@ def getStockPrice():
                 return "symbol not found"
         except json.JSONDecodeError: 
             return f"Error: {response.status_code}"
-        
 
-@app.route('/databaseApp', methods=['GET', 'POST'])
-def databaseApp():
-    return render_template('databaseApp.html')
+@app.route('/login')
+def login():
+    if request.method == "POST":
+        user = Users.query.filter_by(
+            username=request.form.get("username")).first()
+        # Check if the password entered is the 
+        # same as the user's password
+        if user.password == request.form.get("password"):
+            # Use the login_user method to log in the user
+            login_user(user)
+            return redirect(url_for("index"))
+        # (we'll create the home route in a moment)
+    return render_template("login.html")
+
+@app.route('/signup')
+def signup():
+    return render_template('signup.html')
 
 
+@app.route('/signup', methods=["POST", "GET"])
+def signup_post():
+    if request.method == "POST":
+        user = Users(username=request.form.get("username"),
+                     password=request.form.get("password"))
+        db.session.add(user)
+        # Commit the changes made
+        db.session.commit()
+        return redirect(url_for('login'))
+    return render_template('signup.html')
 
-    
-   
 
-if __name__ == '__main__':
-    app.run(debug=True)
+@app.route('/logout')
+def logout():
+    return render_template('logout.html')
