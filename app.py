@@ -34,6 +34,7 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
+
 @login_manager.user_loader
 def loader_user(user_id):
     return Users.query.get(user_id)
@@ -191,34 +192,49 @@ def getStockPrice():
         except json.JSONDecodeError: 
             return f"Error: {response.status_code}"
 
+def usernameValid(username): 
+    if(len(username) <= 8):
+        return True
+    return False
+
+def passwordValid(password):
+    if(len(password) <= 16):
+        return True
+    return False
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == "POST":
-        user = Users.query.filter_by(
-            username=request.form.get("username")).first()
-        # Check if the password entered is the 
-        # same as the user's password
-        if user.password == request.form.get("password"):
-            # Use the login_user method to log in the user
-            login_user(user)
-            return redirect(url_for("index"))
-        # (we'll create the home route in a moment)
+        if (usernameValid(request.form.get("username")) and passwordValid(request.form.get("password"))):
+
+            #Requests username from Users table 
+            user = Users.query.filter_by(
+                username=request.form.get("username")).first()
+                
+            if user.password == request.form.get("password"):
+                login_user(user)
+                return redirect(url_for("index"))
+    print("Invalid")
     return render_template("login.html")
 
-@app.route('/signup')
-def signup():
-    return render_template('signup.html')
-
+def uniqueUsername(username):
+    # Check if the username already exists in the database
+    existing_user = Users.query.filter_by(username=username).first()
+    return existing_user is None
 
 @app.route('/signup', methods=["POST", "GET"])
 def signup_post():
     if request.method == "POST":
-        user = Users(username=request.form.get("username"),
-                     password=request.form.get("password"))
-        db.session.add(user)
-        # Commit the changes made
-        db.session.commit()
-        return redirect(url_for('login'))
+        iUsername = request.form.get("username")
+        if (usernameValid(iUsername) and passwordValid(request.form.get("password")) and uniqueUsername(iUsername)):
+            user = Users(username=request.form.get("username"),
+                        password=request.form.get("password"))
+            db.session.add(user)
+            # Commit the changes made
+            db.session.commit()
+            return redirect(url_for('login'))
+    print("Invalid Signup")
     return render_template('signup.html')
 
 
