@@ -36,7 +36,7 @@ def loader_user(user_id):
     return Users.query.get(user_id)
 
 
-
+#def Test
 
 # Initialize app with extension
 db.init_app(app)
