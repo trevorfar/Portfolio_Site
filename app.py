@@ -3,7 +3,7 @@ import requests
 from flask import Flask, render_template, request, url_for, flash, redirect, jsonify, session, Blueprint
 from flask_session import Session
 import os
-from flask_login import LoginManager, UserMixin, login_user
+from flask_login import LoginManager, UserMixin, login_user, logout_user
 from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
@@ -45,6 +45,9 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
+@login_manager.user_loader
+def loader_user(user_id):
+    return Users.query.get(user_id)
 
 
 
@@ -221,7 +224,7 @@ def getStockPrice():
         except json.JSONDecodeError: 
             return f"Error: {response.status_code}"
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == "POST":
         user = Users.query.filter_by(
@@ -252,6 +255,8 @@ def signup_post():
     return render_template('signup.html')
 
 
+
 @app.route('/logout')
 def logout():
-    return render_template('logout.html')
+    logout_user()
+    return redirect(url_for("index"))
