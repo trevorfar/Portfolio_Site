@@ -1,19 +1,17 @@
-import sqlite3, json
+import json
 import requests
-from flask import Flask, render_template, request, url_for, flash, redirect, jsonify, session, Blueprint
-from flask_session import Session
+from flask import Flask, render_template, request, url_for, redirect, session
 import os
-from flask_login import LoginManager, UserMixin, login_user, logout_user
+from flask_login import LoginManager, login_user, logout_user
 from dotenv import load_dotenv
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.sql import func
+from models import Users, db
+from calculator import evaluateExpression, clear, clearHistory
 
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('secret_key')
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite"
 
-db = SQLAlchemy()
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -23,20 +21,11 @@ load_dotenv()
 expHistory = []
 resHistory = []
 
-# Create user model
-class Users(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(250), unique=True,
-                         nullable=False)
-    password = db.Column(db.String(250),
-                         nullable=False)
- 
+
 @login_manager.user_loader
 def loader_user(user_id):
     return Users.query.get(user_id)
 
-
-#def Test
 
 # Initialize app with extension
 db.init_app(app)
@@ -50,27 +39,7 @@ def loader_user(user_id):
     return Users.query.get(user_id)
 
 
-
-def evaluateExpression(expression):
-    try:
-        if not expression.strip():
-            return 0, None
-        
-        result = eval(expression)
-        return result, None
-    except Exception as e:
-        return None, str(e)
-    
-#Clear for Calculator
-def clear():
-   return '', None
-
-#clears any equations in the calculator
-def clearHistory():
-   return [], []
-
 currentPlayer = 'X'
-
 
 @app.route('/')
 def index():
@@ -79,7 +48,6 @@ def index():
 @app.route('/profile')
 def profile():
     return render_template('profile.html')
-
 
 
 @app.route('/discrete')
@@ -138,7 +106,6 @@ def calculate():
     expression = request.form.get('expression')
     expHistory = session.get('expHistory', [])
     resHistory = session.get('resHistory', [])
-
     if expHistory and resHistory:
         # Clear the display if there are already equations in history
         expression, result = clear()

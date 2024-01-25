@@ -4,25 +4,29 @@
 {% block content %}
 <div class="container">
     <div class="row justify-content-center">
+
         <div class="col-md-4">
-            <h3 class="display-4">Welcome!</h3>
             <div class="card">
                 <div class="card-body">
+                    <div class="testContainer" style="padding-bottom: 20px;">
+                    <p style = "display: inline;">Don't have an Account? <a href="{{url_for('signup')}}">Sign up</a></p>
+                    </div>
                     <form method="POST" action="/login">
                         <div class="form-group">
-                            <label for="email">Your Username</label>
+                            <label for="email" style="font-size: 18px;">Your Username</label>
                             <input class="form-control form-control-lg" type="text" name="username" placeholder="Your Username" autofocus="">
                         </div>
 
                         <div class="form-group">
-                            <label for="password">Your Password</label>
+                            <label for="password" style="font-size: 18px;">Your Password</label>
                             <input class="form-control form-control-lg" type="password" name="password" id="password" placeholder="Your Password">
                         </div>
 
-                        <div class="form-group form-check">
+                        <!-- <div class="form-group form-check">
                             <input type="checkbox" class="form-check-input" id="remember" name="remember">
                             <label class="form-check-label" for="remember">Remember me</label>
-                        </div>
+                        </div> -->
+                      
                         
                         <button type="submit" class="btn btn-info btn-block btn-lg">Login</button>
                     </form>
