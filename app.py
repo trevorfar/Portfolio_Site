@@ -1,17 +1,17 @@
 import json
 import requests
-from flask import Flask, render_template, request, url_for, redirect, session
+from flask import Flask, render_template, request, url_for, redirect, session, g
 import os
-from flask_login import LoginManager, login_user, logout_user
+from flask_login import LoginManager, login_user, logout_user, current_user
 from dotenv import load_dotenv
 from models import Users, db
 from calculator import evaluateExpression, clear, clearHistory
 
 
 app = Flask(__name__)
+app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.secret_key = os.environ.get('secret_key')
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite"
-
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -46,9 +46,6 @@ currentPlayer = 'X'
 def index():
     return render_template('index.html')
 
-@app.route('/profile')
-def profile():
-    return render_template('profile.html')
 
 
 @app.route('/discrete')
@@ -203,6 +200,27 @@ def passwordValid(password):
     return False
 
 
+@app.route('/getUser', methods=['GET'])
+def getUser():
+    user_id = session.get('user_id')
+    if user_id is not None:
+        print("logged in")
+        return render_template("login.html", curUser=user_id)
+    else:
+        print("not logged in")
+        return 'User not logged in'
+
+@app.route('/profile')
+def profile():
+    #current_user is a flask-login default 
+    username = current_user.username
+    print(f"{username}")
+    if username:
+        return render_template('profile.html', username=username)
+    else:
+        print("Shouldnt got here")
+        return render_template('profile.html')
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == "POST":
@@ -215,6 +233,7 @@ def login():
             if user.password == request.form.get("password"):
                 login_user(user)
                 return redirect(url_for("index"))
+            
     print("Invalid")
     return render_template("login.html")
 

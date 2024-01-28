@@ -10,4 +10,7 @@ class Users(UserMixin, db.Model):
                          nullable=False)
     password = db.Column(db.String(250),
                          nullable=False)
+    
+
+
  

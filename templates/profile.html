@@ -2,7 +2,13 @@
 
 {% block title %} Profile {% endblock %}
 {% block content %}
-<h1 class="title">
-  Welcome to prof!
-</h1>
+
+<form method="GET" action="/getUser">
+<div><h1>Welcome {{ username }}!</h1></div>
+
+</form>
+
+
+
+
 {% endblock %}
