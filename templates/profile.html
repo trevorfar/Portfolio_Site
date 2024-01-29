@@ -4,8 +4,11 @@
 {% block content %}
 
 <form method="GET" action="/getUser">
-<div><h1>Welcome {{ username }}!</h1></div>
 
+<div><h1>Welcome 
+    {% if username %}
+    {{ username }}!</h1></div>
+    {% endif %}
 </form>
 
 

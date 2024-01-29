@@ -213,13 +213,13 @@ def getUser():
 @app.route('/profile')
 def profile():
     #current_user is a flask-login default 
-    username = current_user.username
-    print(f"{username}")
-    if username:
+    if current_user.is_authenticated:
+        username = current_user.username
         return render_template('profile.html', username=username)
     else:
-        print("Shouldnt got here")
-        return render_template('profile.html')
+        return render_template('profile.html', username="Guest")
+
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -248,7 +248,8 @@ def signup_post():
         iUsername = request.form.get("username")
         if (usernameValid(iUsername) and passwordValid(request.form.get("password")) and uniqueUsername(iUsername)):
             user = Users(username=request.form.get("username"),
-                        password=request.form.get("password"))
+                        password=request.form.get("password"),
+                        email=request.form.get('email'))
             db.session.add(user)
             # Commit the changes made
             db.session.commit()
