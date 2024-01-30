@@ -194,6 +194,7 @@ def getStockPrice():
             return f"Error: {response.status_code}"
 
 def usernameValid(username): 
+    
     if(len(username) <= 8):
         return True
     return False
@@ -227,12 +228,15 @@ def profile():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+
     if request.method == "POST":
-        if (usernameValid(request.form.get("username")) and passwordValid(request.form.get("password"))):
+        username = request.form.get("username").lower().strip()
+        print(username)
+        if (usernameValid(username) and passwordValid(request.form.get("password"))):
 
             #Requests username from Users table 
             user = Users.query.filter_by(
-                username=request.form.get("username")).first()
+                username=username).first()
                 
             if user.password == request.form.get("password"):
                 login_user(user)
@@ -249,9 +253,9 @@ def uniqueUsername(username):
 @app.route('/signup', methods=["POST", "GET"])
 def signup_post():
     if request.method == "POST":
-        iUsername = request.form.get("username")
+        iUsername = request.form.get("username").lower().strip()
         if (usernameValid(iUsername) and passwordValid(request.form.get("password")) and uniqueUsername(iUsername)):
-            user = Users(username=request.form.get("username"),
+            user = Users(username=request.form.get("username").lower(),
                         password=request.form.get("password"),
                         email=request.form.get('email'))
             db.session.add(user)
