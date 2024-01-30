@@ -6,12 +6,16 @@ from flask_login import LoginManager, login_user, logout_user, current_user
 from dotenv import load_dotenv
 from models import Users, db
 from calculator import evaluateExpression, clear, clearHistory
+from flask_migrate import Migrate
+
 
 
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.secret_key = os.environ.get('secret_key')
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite"
+
+migrate = Migrate(app, db)
 
 login_manager = LoginManager()
 login_manager.init_app(app)

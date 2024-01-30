@@ -11,7 +11,7 @@ class Users(UserMixin, db.Model):
     password = db.Column(db.String(250),
                          nullable=False)
     email = db.Column(db.String(250),
-                         nullable=False)
+                          nullable=False)
     
 
 
