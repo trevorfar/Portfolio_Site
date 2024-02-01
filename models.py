@@ -13,6 +13,7 @@ class Users(UserMixin, db.Model):
                          nullable=False)
     email = db.Column(db.String(250),
                           nullable=False)
+    gamesPlayed = db.Column(db.Integer, default=0)
     
 
 

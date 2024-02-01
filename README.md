@@ -3,3 +3,7 @@ Created using Flask, HTML and CSS, as well as template engines such as Jinja.
 #Note to the note, that makese sense *facepalm* pywin = pywindows 
 
 Sources: https://www.digitalocean.com/community/tutorials/how-to-make-a-web-application-using-flask-in-python-3
+
+Updating DB: 
+flask db migrate -m
+flask db upgrade 

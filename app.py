@@ -1,6 +1,6 @@
 import json
 import requests
-from flask import Flask, render_template, request, url_for, redirect, session, g
+from flask import Flask, render_template, request, url_for, redirect, session, g, jsonify
 import os
 from flask_login import LoginManager, login_user, logout_user, current_user
 from dotenv import load_dotenv
@@ -129,10 +129,26 @@ def calculate():
     return render_template('calculator.html', result=result, expression=expression,
         expHistory=expHistory, resHistory=resHistory)
 
+@app.route('/updateGames', methods=['POST'])
+def updateGames():
+    if current_user.is_authenticated:
+        user = Users.query.filter_by(username=current_user.username).first()
+
+        if user:
+            user.gamesPlayed += 1
+            db.session.commit()
+            
+            return jsonify({'message': 'Games played updated successfully'}), 200
+        else:
+            return jsonify({'error': 'User not found'}), 404
+    else:
+        return jsonify({'error': 'User not logged in'}), 401
+ 
+
 
 @app.route('/ticTacToe')
 def ticTacToe():
-    return render_template('ticTacToe.html', )
+    return render_template('ticTacToe.html')
 
 @app.route('/app4')
 def app4():

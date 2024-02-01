@@ -8,7 +8,14 @@ let gameEnded = false;
 document.addEventListener("DOMContentLoaded", function() {
 
     initializePage();
+
+
+// window.addEventListener("beforeunload", function(event) {
+//     // Call your function here
+//     sendPacket();
+// });
 });
+
 
 function initializePage() {
     toggleVisibility();
@@ -44,6 +51,7 @@ function checkWinner() {
         if (board[i] !== '' && board[i + 1] !== '' && board[i + 2] !== '' && board[i] == board[i + 1] && board[i] == board[i + 2]) {
             toggleVisibility();
             toggleButton();
+            sendPacket();
             gameEnded = true; // Set game state to ended
             return;
         }
@@ -53,6 +61,7 @@ function checkWinner() {
         if (board[i] !== '' && board[i + 3] !== '' && board[i + 6] !== '' && board[i] == board[i + 3] && board[i] == board[i + 6]) {
             toggleVisibility();
             toggleButton();
+            sendPacket();
             gameEnded = true;
             return;
         }
@@ -62,6 +71,7 @@ function checkWinner() {
         (board[2] !== '' && board[4] !== '' && board[6] !== '' && board[2] == board[4] && board[2] == board[6])) {
         toggleVisibility();
         toggleButton();
+        sendPacket();
         gameEnded = true;
         return;
     }
@@ -69,6 +79,7 @@ function checkWinner() {
     if (!board.includes('')) {
         toggleVisibility('Tie');
         toggleButton();
+        sendPacket();
         gameEnded = true;
     }
 }
@@ -90,7 +101,27 @@ var alert1 = document.getElementById("alert1");
     playAgainButton.style.display = (playAgainButton.style.display === "none") ? "block" : "none";
     }
 
+
 updateBoard();
+//Annoying but need all of this to update the games Played section 
+function sendPacket() {
+    fetch('/updateGames', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            // You can include any other data you want to send to the server
+        }),
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+}
 
 function resetGame() {
     board = Array(9).fill('');
