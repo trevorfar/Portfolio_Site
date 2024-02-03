@@ -133,11 +133,9 @@ def calculate():
 def updateGames():
     if current_user.is_authenticated:
         user = Users.query.filter_by(username=current_user.username).first()
-
         if user:
             user.gamesPlayed += 1
             db.session.commit()
-            
             return jsonify({'message': 'Games played updated successfully'}), 200
         else:
             return jsonify({'error': 'User not found'}), 404
@@ -146,9 +144,24 @@ def updateGames():
  
 
 
-@app.route('/ticTacToe')
+@app.route('/ticTacToe', methods=['GET'])
 def ticTacToe():
+    if current_user.is_authenticated:
+        playedGames = Users.query.filter_by(gamesPlayed=current_user.gamesPlayed).first()
+        return render_template('ticTacToe.html', playedGames=playedGames)
     return render_template('ticTacToe.html')
+
+
+@app.route('/updateTicker', methods=['GET'])
+def update():
+    if current_user.is_authenticated:
+        playedGames = Users.query.filter_by(gamesPlayed=current_user.gamesPlayed).first()
+        return str(playedGames.gamesPlayed)
+    return "null"
+
+@app.route('/test')
+def test():
+    return render_template('test.html')
 
 @app.route('/app4')
 def app4():
@@ -210,7 +223,6 @@ def getStockPrice():
             return f"Error: {response.status_code}"
 
 def usernameValid(username): 
-    
     if(len(username) <= 8):
         return True
     return False
@@ -257,7 +269,7 @@ def login():
             if user.password == request.form.get("password"):
                 login_user(user)
                 return redirect(url_for("index"))
-            
+
     print("Invalid")
     return render_template("login.html")
 

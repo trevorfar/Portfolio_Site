@@ -132,3 +132,18 @@ function resetGame() {
     updateBoard();
     gameEnded = false;
 }
+
+
+function loadDoc() {
+    $.ajax({
+        type: "GET",
+        url: "/updateTicker",  
+        success: function (data) {
+            $("#played").text(data);
+        },
+        error: function () {
+            alert("Should not reach");
+            console.log("Error updating games");
+        }
+    });
+  }
