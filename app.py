@@ -286,39 +286,46 @@ def login():
         return render_template("login.html", username=username, password=request.form.get("password"), passwordErr=passwordError)
     return render_template("login.html")
 
-def uniqueUsername(username):
+def uniqueEmail(email):
     # Check if the username already exists in the database
-    existing_user = Users.query.filter_by(username=username).first()
+    existing_user = Users.query.filter_by(email=email).first()
     return existing_user is None
-# CHANGE THIS TO EMAIL LATER
 
 @app.route('/signup', methods=["POST", "GET"])
 def signup_post():
-    username_Valid = False  
-    password_Valid = False
+  
 
-    if request.method == "POST":        
-        rawPass = request.form.get("password")
-        iUsername = request.form.get("username").lower().strip()
+    if request.method == "POST": 
+       #initial declarations, can remove some after I edit 
+        username_Valid = False  
+        password_Valid = False
+        emailError = ""
+        usernameError = ""
+        passwordError = ""
+        reqUsername = request.form.get("username")
+        reqPassword = request.form.get("password")
+
+        rawPass = reqPassword
+        iUsername = reqUsername.lower().strip()
 
         username_Valid = usernameValid(iUsername)
-        password_Valid = passwordValid(request.form.get("password"))
+        password_Valid = passwordValid(reqPassword)
 
-        if (usernameValid(iUsername) and passwordValid(rawPass) and uniqueUsername(iUsername)):
+        email = request.form.get("email")
+
+        if (not uniqueEmail(email)):
+            emailError = "invalid"
+        
+        if (usernameValid(iUsername) and passwordValid(rawPass) and uniqueEmail(email)):
             hashed_password = generate_password_hash(rawPass, method='pbkdf2:sha256')
-            user = Users(username=request.form.get("username").lower(),
-            password=hashed_password, email=request.form.get('email'))
+            user = Users(username=iUsername,
+            password=hashed_password, email=email)
             
-
             db.session.add(user)
             db.session.commit()
             return redirect(url_for('login'))
     
-        usernameError = "good"
-        passwordError = "good"
-        
-        reqUsername = request.form.get("username")
-        reqPassword = request.form.get("password")
+ 
 
         if not username_Valid and not password_Valid:
             usernameError = "invalid"
@@ -327,7 +334,9 @@ def signup_post():
             usernameError = "invalid"
         elif not password_Valid:
             passwordError= "invalid"  
-        return render_template("signup.html", username = reqUsername, password = reqPassword, usernameErr=usernameError, email=request.form.get("email"), passwordErr=passwordError)
+        
+        return render_template("signup.html", username = reqUsername, password = reqPassword, 
+                 usernameErr=usernameError, email=email, passwordErr=passwordError, emailErr=emailError)
     return render_template("signup.html")
 
 

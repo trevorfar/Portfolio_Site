@@ -5,11 +5,27 @@
 
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/signup.css') }}">
-<script src="{{ url_for('static', filename='java/signup.js') }}"></script>
+<script>
 
-<style>
-    
-</style>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.activeElement.blur(); 
+        const textField = document.getElementsByClassName("form-control form-control-lg");
+
+        for (let i = 0; i < textField.length; i++) {
+            textField[i].blur();
+        }
+        
+        {%if emailErr == 'invalid' %}
+        textField.namedItem("email").focus();
+        {% elif usernameErr == 'invalid' %}
+        textField.namedItem("username").focus();
+        {% elif passwordErr == 'invalid' %}
+        textField.namedItem("password").focus();
+        {% endif %}
+
+    });
+</script>
+
 
 <div class="container">
     <div class="row justify-content-center">
@@ -17,12 +33,12 @@
             <div class="card">
                 <h3 class="display-4 text-center">Sign Up</h3>
                 <div class="card-body">
-                    <form method="POST" action="/signup">
+                    <form method="POST" action="/signup" autocomplete="off">
 
 
-                        <div class="form-group {% if usernameErr == 'invalid' %} invalid {% endif %}">
+                        <div class="form-group {% if usernameErr == 'invalid' and not None %} invalid {% endif %}">
                             <label for="username">Username</label>
-                            <input class="form-control form-control-lg" type="text" name="username"placeholder="Username" autofocus="" autocomplete="off" value="{{ username }}">
+                            <input class="form-control form-control-lg" type="text" name="username"placeholder="Username" autocomplete="off" value="{{ username }}">
                             <span class="tooltiptext">
                                 <ul>
                                     <li>Between 3-12 characters</li>
@@ -31,7 +47,7 @@
                             </span>
                         </div>
 
-                        <div class="form-group {% if passwordErr == 'invalid' %} invalid {% endif %}">
+                        <div class="form-group {% if passwordErr == 'invalid' and not None %} invalid {% endif %}">
                             <label for="password">Password</label>
                             <input class="form-control form-control-lg" type="password" name="password" placeholder="Password" autocomplete="off" value="{{ password }}">
                             <span class="tooltiptext"> 
@@ -43,9 +59,17 @@
                             </span>
                         </div>
     
-                        <div class="form-group">
+                        <div class="form-group {% if emailErr == 'invalid' %} invalid {% endif %}">
                             <label for="email">Email</label>
                             <input class="form-control form-control-lg" type="email" name="email" placeholder="yours@gmail.com" autocomplete="off" value="{{ email }}">
+                            
+                            {% if emailErr == 'invalid'%} 
+                            <span class="tooltiptext"> 
+                                <ul>
+                                    <li>Email already registered</li>
+                                </ul> 
+                            </span>
+                            {% endif %}
                         </div>
 
                         <button type="submit" class="btn btn-info btn-block btn-lg">Sign Up</button>
