@@ -1,0 +1,72 @@
+body{
+    height: auto;
+    background-image: url('../Images/signup.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+ }
+
+
+.form-group {
+position: relative;
+display: inline-block;
+}
+ 
+ 
+
+/* Tooltip text */
+.form-group .tooltiptext {
+visibility: hidden;
+width: fit-content ;
+background-color: #555;
+color: #fff;
+text-align: left;
+white-space: nowrap;
+padding: 5px 5px;
+padding-left: 5px;
+padding-right: 5px;
+border-radius: 6px;
+
+/* Position the tooltip text */
+position: absolute;
+z-index: 1;
+top: 100%;
+left: 50%;
+margin-left: -60px;
+
+
+/* Fade in tooltip */
+opacity: 0;
+transition: opacity 0.3s;
+}
+.form-group .tooltiptext ul{
+padding-left: 14px;
+}
+
+.form-group.invalid input {
+border-color: red;
+box-shadow: none;
+}
+
+/* Tooltip arrow */
+.form-group .tooltiptext::after {
+content: "";
+position: absolute;
+bottom: 100%;
+left: 30%;
+margin-left: -5px;
+border-width: 5px;
+border-style: solid;
+border-color: transparent transparent #555  transparent;
+
+}
+
+.container{
+    padding-top: 1%;
+}
+.form-group input:focus + .tooltiptext {
+visibility: visible;
+opacity: 1;
+
+}
+
+

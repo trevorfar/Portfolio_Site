@@ -2,22 +2,27 @@
 
 
 {% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+
 <div class="container">
     <div class="row justify-content-center">
 
         <div class="col-md-4">
+        
             <div class="card">
+                <h3 class="display-4 text-center">Log in</h3>
                 <div class="card-body">
                     <div class="testContainer" style="padding-bottom: 20px;">
                     <p style = "display: inline;">Don't have an Account? <a href="{{url_for('signup_post')}}">Sign up</a></p>
                     </div>
                     <form method="POST" action="/login">
-                        <div class="form-group">
+                        <div class="form-group {% if passwordErr == 'invalid' %} invalid {% endif %}">
                             <label for="email" style="font-size: 18px;">Your Username</label>
-                            <input class="form-control form-control-lg" type="text" name="username" placeholder="Your Username" autofocus="">
+                            <input class="form-control form-control-lg" type="text" name="username" placeholder="Your Username" autofocus="" value = "{{ username }}">
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group {% if passwordErr == 'invalid' %} invalid {% endif %}">
                             <label for="password" style="font-size: 18px;">Your Password</label>
                             <input class="form-control form-control-lg" type="password" name="password" id="password" placeholder="Your Password">
                         </div>

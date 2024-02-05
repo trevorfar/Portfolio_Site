@@ -2,6 +2,7 @@ import json
 import requests
 from flask import Flask, render_template, request, url_for, redirect, session, g, jsonify
 import os
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, login_user, logout_user, current_user
 from dotenv import load_dotenv
 from models import Users, db
@@ -223,13 +224,25 @@ def getStockPrice():
             return f"Error: {response.status_code}"
 
 def usernameValid(username): 
-    if(len(username) <= 8):
+    if(len(username) <= 12 and len(username) >= 3):
         return True
     return False
 
+def hasCapital(data):
+    for char in range(len(data)):
+        if data[char].isupper():
+            return True
+    return False
+
+def hasNumber(data):
+    for i in range (len(data)):
+        if data[i].isdigit():
+            return True
+    return False
+
 def passwordValid(password):
-    if(len(password) <= 16):
-        return True
+    if(len(password) >= 6 and hasNumber(password)) and hasCapital(password):
+       return True
     return False
 
 
@@ -256,42 +269,66 @@ def profile():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    passwordError = "good"
 
     if request.method == "POST":
         username = request.form.get("username").lower().strip()
-        print(username)
+     
         if (usernameValid(username) and passwordValid(request.form.get("password"))):
-
-            #Requests username from Users table 
             user = Users.query.filter_by(
                 username=username).first()
-                
-            if user.password == request.form.get("password"):
+            
+            if user and check_password_hash(user.password, request.form.get("password")):
                 login_user(user)
                 return redirect(url_for("index"))
-
-    print("Invalid")
+        
+        passwordError = "invalid"
+        return render_template("login.html", username=username, password=request.form.get("password"), passwordErr=passwordError)
     return render_template("login.html")
 
 def uniqueUsername(username):
     # Check if the username already exists in the database
     existing_user = Users.query.filter_by(username=username).first()
     return existing_user is None
+# CHANGE THIS TO EMAIL LATER
 
 @app.route('/signup', methods=["POST", "GET"])
 def signup_post():
-    if request.method == "POST":
+    username_Valid = False  
+    password_Valid = False
+
+    if request.method == "POST":        
+        rawPass = request.form.get("password")
         iUsername = request.form.get("username").lower().strip()
-        if (usernameValid(iUsername) and passwordValid(request.form.get("password")) and uniqueUsername(iUsername)):
+
+        username_Valid = usernameValid(iUsername)
+        password_Valid = passwordValid(request.form.get("password"))
+
+        if (usernameValid(iUsername) and passwordValid(rawPass) and uniqueUsername(iUsername)):
+            hashed_password = generate_password_hash(rawPass, method='pbkdf2:sha256')
             user = Users(username=request.form.get("username").lower(),
-                        password=request.form.get("password"),
-                        email=request.form.get('email'))
+            password=hashed_password, email=request.form.get('email'))
+            
+
             db.session.add(user)
-            # Commit the changes made
             db.session.commit()
             return redirect(url_for('login'))
-    print("Invalid Signup")
-    return render_template('signup.html')
+    
+        usernameError = "good"
+        passwordError = "good"
+        
+        reqUsername = request.form.get("username")
+        reqPassword = request.form.get("password")
+
+        if not username_Valid and not password_Valid:
+            usernameError = "invalid"
+            passwordError= "invalid"
+        elif not username_Valid:
+            usernameError = "invalid"
+        elif not password_Valid:
+            passwordError= "invalid"  
+        return render_template("signup.html", username = reqUsername, password = reqPassword, usernameErr=usernameError, email=request.form.get("email"), passwordErr=passwordError)
+    return render_template("signup.html")
 
 
 
