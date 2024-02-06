@@ -397,8 +397,8 @@ def forgot():
             except Exception as e:
                 print(str(e))
 
-
-        return redirect(url_for('login'))
+            return redirect(url_for('login'))
+        return redirect(url_for('index'))
     return render_template('reset_password.html')
 
 @app.route('/reset', methods=['GET', 'POST'])
