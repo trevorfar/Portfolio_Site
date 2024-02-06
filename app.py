@@ -9,12 +9,12 @@ from models import Users, db
 from calculator import evaluateExpression, clear, clearHistory
 from flask_migrate import Migrate
 from flask_mail import Message, Mail
-from sqlalchemy import or_
 import secrets
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 
 
 app = Flask(__name__)
-mail = Mail(app)
 
 app.secret_key = os.environ.get('secret_key')
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite"
@@ -345,15 +345,16 @@ def signup_post():
 def logout():
     logout_user()
     return redirect(url_for("index"))
+mail = Mail(app)
 
-app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_SERVER']='smtp.sendgrid.net'
 app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = 'trevorfariasbot@gmail.com'
-key = os.environ.get('emailPass')
-app.config['MAIL_PASSWORD'] = key
+app.config['MAIL_USERNAME'] = 'apikey'
+emailPas = os.environ.get('pass')
+app.config['MAIL_PASSWORD'] = emailPas
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True  
-mail = Mail(app)
+
 
 def generate_reset_token():
     return secrets.token_urlsafe(32)
@@ -372,10 +373,19 @@ def forgot():
 
             recipient = user1.email
             body = f"Beep Boop, \n\n Please click this link to reset your password: {reset_link}"
-            msg = Message("Password Reset",
-                    sender ='trevorfariasbot@gmail.com',
-                    recipients=[recipient], body=body)
-            mail.send(msg) 
+            message = Mail(
+                    from_email='trevorfariasbot@gmail.com',
+                    to_emails=[recipient], subject="Password Reset",plain_text_content=body)
+            
+            try:
+                sg = SendGridAPIClient(os.environ.get('pass'))
+                response = sg.send(message)
+                print(response.status_code)
+                print(response.body)
+                print(response.headers)
+            except Exception as e:
+                print(str(e))
+
         else: 
             print('whoopsies')
             flash('invalid')
