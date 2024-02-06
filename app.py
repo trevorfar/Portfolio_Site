@@ -1,7 +1,7 @@
 import json
 import requests
 from flask import Flask, render_template, request, url_for, redirect, session, g, jsonify, flash
-import os
+import os, re
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, login_user, logout_user, current_user
 from dotenv import load_dotenv
@@ -270,19 +270,28 @@ def profile():
     else:
         return render_template('profile.html', username="Guest")
 
+def checkUsername(data):
+    email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    if re.match(email_pattern, data):
+        return False
 
+    else:
+        return True
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     passwordError = "good"
-
     if request.method == "POST":
-        username = request.form.get("username").lower().strip()
-     
-        if (usernameValid(username) and passwordValid(request.form.get("password"))):
-            user = Users.query.filter_by(
-                username=username).first()
-            
+        iUsername = request.form.get("username").lower().strip()
+        if(checkUsername(iUsername)):
+            username = iUsername
+            user = Users.query.filter_by(username=username).first()
+            if user and check_password_hash(user.password, request.form.get("password")):
+                login_user(user)
+                return redirect(url_for("index"))
+        elif(not checkUsername(iUsername)):
+            email = iUsername
+            user = Users.query.filter_by(email=email).first()
             if user and check_password_hash(user.password, request.form.get("password")):
                 login_user(user)
                 return redirect(url_for("index"))
@@ -347,16 +356,8 @@ def signup_post():
 def logout():
     logout_user()
     return redirect(url_for("index"))
-# mail = Mail(app)
 
 
-# app.config['MAIL_SERVER']='smtp.sendgrid.net'
-# app.config['MAIL_PORT'] = 465
-# app.config['MAIL_USERNAME'] = 'apikey'
-# emailPas = os.environ.get('pass')
-# app.config['MAIL_PASSWORD'] = emailPas
-# app.config['MAIL_USE_TLS'] = False
-# app.config['MAIL_USE_SSL'] = True  
 
 
 def generate_reset_token():
