@@ -13,7 +13,7 @@ import secrets
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 
-
+#yes
 app = Flask(__name__)
 
 app.secret_key = os.environ.get('secret_key')
