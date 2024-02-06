@@ -377,7 +377,7 @@ def forgot():
             # reset_link = f'https://trevorfarias.com/reset?token={reset_token}'
 
             recipient = user1.email
-            body = "BOOP"
+            body = "JUST UPDATED THIS"
             # body = f"Beep Boop, \n\n Please click this link to reset your password: {reset_link}"
             
             sg_api_key = os.getenv("SEND_GRID_APIKEY")
