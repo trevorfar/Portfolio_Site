@@ -370,14 +370,15 @@ def forgot():
         user1 = Users.query.filter_by(email=request.form.get("email")).first()
 
         if user1 is not None:
-            reset_token = generate_reset_token()
-            user1.reset_token = reset_token
-            db.session.commit()
+            # reset_token = generate_reset_token()
+            # user1.reset_token = reset_token
+            # db.session.commit()
 
-            reset_link = f'https://trevorfarias.com/reset?token={reset_token}'
+            # reset_link = f'https://trevorfarias.com/reset?token={reset_token}'
 
             recipient = user1.email
-            body = f"Beep Boop, \n\n Please click this link to reset your password: {reset_link}"
+            body = "BOOP"
+            # body = f"Beep Boop, \n\n Please click this link to reset your password: {reset_link}"
             
             sg_api_key = os.getenv("SEND_GRID_APIKEY")
 
@@ -387,7 +388,6 @@ def forgot():
                     subject="Password Reset", 
                     html_content=body)
             
-
             try:
                 sg = SendGridAPIClient(api_key=sg_api_key)
                 response = sg.send(message)
