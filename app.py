@@ -1,6 +1,6 @@
 import json
 import requests
-from flask import Flask, render_template, request, url_for, redirect, session, g, jsonify
+from flask import Flask, render_template, request, url_for, redirect, session, g, jsonify, flash
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, login_user, logout_user, current_user
@@ -8,11 +8,14 @@ from dotenv import load_dotenv
 from models import Users, db
 from calculator import evaluateExpression, clear, clearHistory
 from flask_migrate import Migrate
-
+from flask_mail import Message, Mail
+from sqlalchemy import or_
+import secrets
 
 
 app = Flask(__name__)
-app.config["TEMPLATES_AUTO_RELOAD"] = True
+mail = Mail(app)
+
 app.secret_key = os.environ.get('secret_key')
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite"
 
@@ -294,12 +297,11 @@ def uniqueEmail(email):
 @app.route('/signup', methods=["POST", "GET"])
 def signup_post():
   
-
     if request.method == "POST": 
        #initial declarations, can remove some after I edit 
         username_Valid = False  
         password_Valid = False
-        emailError = ""
+        emailError =    ""
         usernameError = ""
         passwordError = ""
         reqUsername = request.form.get("username")
@@ -325,8 +327,6 @@ def signup_post():
             db.session.commit()
             return redirect(url_for('login'))
     
- 
-
         if not username_Valid and not password_Valid:
             usernameError = "invalid"
             passwordError= "invalid"
@@ -345,3 +345,70 @@ def signup_post():
 def logout():
     logout_user()
     return redirect(url_for("index"))
+
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'trevorfariasbot@gmail.com'
+key = os.environ.get('emailPass')
+app.config['MAIL_PASSWORD'] = key
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True  
+mail = Mail(app)
+
+def generate_reset_token():
+    return secrets.token_urlsafe(32)
+
+@app.route('/forgottenPassword', methods=['GET', 'POST'])
+def forgot():
+    if request.method == "POST": 
+        user1 = Users.query.filter_by(
+                email=request.form.get("email")).first()
+
+        if user1 is not None:
+            reset_token = generate_reset_token()
+            user1.reset_token = reset_token
+            db.session.commit()
+            reset_link = f'http://127.0.0.1:5000/reset?token={reset_token}'
+
+            recipient = user1.email
+            body = f"Beep Boop, <br><br> Please click this link to reset your password: {reset_link}"
+            msg = Message("Password Reset",
+                    sender ='trevorfariasbot@gmail.com',
+                    recipients=[recipient], body=body)
+            mail.send(msg) 
+        else: 
+            print('whoopsies')
+            flash('invalid')
+
+        return redirect(url_for('login'))
+    return render_template('reset_password.html')
+
+
+@app.route('/reset', methods=['GET', 'POST'])
+def reset_pass():
+    passwordError = ""
+    if request.method == 'GET':
+        token = request.args.get('token')
+        session['token'] = token
+        return render_template('newPass.html', token=token)
+    
+    if request.method == 'POST':
+        token=session.get('token')
+        if not token:
+            print("shouldnt get here")
+            return render_template('login.html')
+            
+        new_password = request.form.get('password')
+        user1 = Users.query.filter_by(reset_token=token).first()
+
+        if(passwordValid(new_password)):
+
+            user1.password = generate_password_hash(new_password, method='pbkdf2:sha256')
+            user1.reset_token = ""
+            db.session.commit()
+
+            flash('Your password has been successfully reset.')
+            return redirect(url_for('login'))
+    passwordError='invalid'
+    return render_template('newPass.html', token=token, passwordErr=passwordError)
+    

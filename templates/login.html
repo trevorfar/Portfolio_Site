@@ -4,7 +4,21 @@
 {% block content %}
 
 <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+<script>
 
+    function togglePasswordVisibility(eyeIcon) {
+        const passwordInput = document.getElementById('password');
+    
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            eyeIcon.innerHTML = '&#128065'; // Closed eye
+        } else {
+            passwordInput.type = 'password';
+            128374
+            eyeIcon.innerHTML = '&#128374;'; // Open eye
+        }
+    }
+</script>
 <div class="container">
     <div class="row justify-content-center">
 
@@ -24,15 +38,14 @@
 
                         <div class="form-group {% if passwordErr == 'invalid' %} invalid {% endif %}">
                             <label for="password" style="font-size: 18px;">Your Password</label>
+                            <div class="password-container">
                             <input class="form-control form-control-lg" type="password" name="password" id="password" placeholder="Your Password">
+                            <span class="eye" onclick="togglePasswordVisibility(this)">&#128374;</span>
+                            </div>
                         </div>
-
-                        <!-- <div class="form-group form-check">
-                            <input type="checkbox" class="form-check-input" id="remember" name="remember">
-                            <label class="form-check-label" for="remember">Remember me</label>
-                        </div> -->
-                      
-                        
+                            <div class="forgotPass text-center">
+                                <p><a href="{{ url_for('forgot') }}">Forgot Password?</a></p>
+                            </div>
                         <button type="submit" class="btn btn-info btn-block btn-lg">Login</button>
                     </form>
                 </div>

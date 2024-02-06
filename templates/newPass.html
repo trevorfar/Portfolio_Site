@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %} New Password {% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/signup.css') }}">
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        document.activeElement.blur();
+        const textField = document.getElementsByClassName("form-control form-control-lg");
+
+        for (let i = 0; i < textField.length; i++) {
+            textField[i].blur();
+        }
+
+        {%if emailErr == 'invalid' %}
+        textField.namedItem("email").focus();
+        {% elif usernameErr == 'invalid' %}
+        textField.namedItem("username").focus();
+        {% elif passwordErr == 'invalid' %}
+        textField.namedItem("password").focus();
+        {% endif %}
+
+    });
+
+
+    function togglePasswordVisibility(eyeIcon) {
+        const passwordContainer = eyeIcon.parentElement;
+        const passwordInput = passwordContainer.querySelector('input');
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            eyeIcon.innerHTML = '&#128065'; // Closed eye
+        } else {
+            passwordInput.type = 'password';
+            eyeIcon.innerHTML = '&#128374;'; // Open eye
+        }
+    }
+
+</script>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="card">
+                <h3 class="display-4 text-center">Enter Email</h3>
+                <div class="card-body">
+                    <form method="POST" action="/reset">
+                        <div class="form-group {% if passwordErr == 'invalid' %} invalid {% endif %}">
+                            <label for="password" style="font-size: 18px;"> New Password</label>
+                            <div class="password-container">
+
+                            <input class="form-control form-control-lg" type="password" name="password" id="password"
+                                placeholder="Enter new password" autofocus="" required>
+
+                                
+                                <span class="eye" onclick="togglePasswordVisibility(this)">&#128374;</span>
+                                    <span class="tooltiptext">
+                                        <ul>
+                                            <li>Atleast one uppercase</li>
+                                            <li>Atleast one number</li>
+                                            <li>Greater than 6 chars</li>
+                                        </ul>
+                                    </span> 
+                        </div>
+                        </div>
+                        <button type="submit" class="btn btn-info btn-block btn-lg">Reset</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+{% endblock %}

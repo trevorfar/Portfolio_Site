@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 
 {% block title %} Signup {% endblock %}
@@ -8,13 +7,13 @@
 <script>
 
     document.addEventListener('DOMContentLoaded', function () {
-        document.activeElement.blur(); 
+        document.activeElement.blur();
         const textField = document.getElementsByClassName("form-control form-control-lg");
 
         for (let i = 0; i < textField.length; i++) {
             textField[i].blur();
         }
-        
+
         {%if emailErr == 'invalid' %}
         textField.namedItem("email").focus();
         {% elif usernameErr == 'invalid' %}
@@ -24,6 +23,21 @@
         {% endif %}
 
     });
+
+
+    function togglePasswordVisibility(eyeIcon) {
+        const passwordContainer = eyeIcon.parentElement;
+        const passwordInput = passwordContainer.querySelector('input');
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            eyeIcon.innerHTML = '&#128065'; // Closed eye
+        } else {
+            passwordInput.type = 'password';
+            eyeIcon.innerHTML = '&#128374;'; // Open eye
+        }
+    }
+
 </script>
 
 
@@ -38,36 +52,42 @@
 
                         <div class="form-group {% if usernameErr == 'invalid' and not None %} invalid {% endif %}">
                             <label for="username">Username</label>
-                            <input class="form-control form-control-lg" type="text" name="username"placeholder="Username" autocomplete="off" value="{{ username }}">
+                            <input class="form-control form-control-lg" type="text" name="username"
+                                placeholder="Username" autocomplete="off" value="{{ username }}">
                             <span class="tooltiptext">
                                 <ul>
                                     <li>Between 3-12 characters</li>
                                     <li>No special characters</li>
-                                </ul> 
+                                </ul>
                             </span>
                         </div>
 
                         <div class="form-group {% if passwordErr == 'invalid' and not None %} invalid {% endif %}">
                             <label for="password">Password</label>
-                            <input class="form-control form-control-lg" type="password" name="password" placeholder="Password" autocomplete="off" value="{{ password }}">
-                            <span class="tooltiptext"> 
-                                <ul>
-                                    <li>Atleast one uppercase</li>
-                                    <li>Atleast one number</li>
-                                    <li>Greater than 6 chars</li>
-                                </ul> 
-                            </span>
+                            <div class="password-container">
+                                <input class="form-control form-control-lg" type="password" name="password"
+                                    placeholder="Password" autocomplete="off" value="{{ password }}">
+                                    <span class="eye" onclick="togglePasswordVisibility(this)">&#128374;</span>
+                                    <span class="tooltiptext">
+                                        <ul>
+                                            <li>Atleast one uppercase</li>
+                                            <li>Atleast one number</li>
+                                            <li>Greater than 6 chars</li>
+                                        </ul>
+                                    </span> 
+                            </div>
                         </div>
-    
+
                         <div class="form-group {% if emailErr == 'invalid' %} invalid {% endif %}">
                             <label for="email">Email</label>
-                            <input class="form-control form-control-lg" type="email" name="email" placeholder="yours@gmail.com" autocomplete="off" value="{{ email }}">
-                            
-                            {% if emailErr == 'invalid'%} 
-                            <span class="tooltiptext"> 
+                            <input class="form-control form-control-lg" type="email" name="email"
+                                placeholder="yours@gmail.com" autocomplete="off" value="{{ email }}">
+
+                            {% if emailErr == 'invalid'%}
+                            <span class="tooltiptext">
                                 <ul>
                                     <li>Email already registered</li>
-                                </ul> 
+                                </ul>
                             </span>
                             {% endif %}
                         </div>

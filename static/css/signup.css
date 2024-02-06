@@ -63,7 +63,7 @@ border-color: transparent transparent #555  transparent;
 .container{
     padding-top: 1%;
 }
-.form-group input:focus + .tooltiptext {
+.form-group input:focus ~ .tooltiptext {
 visibility: visible;
 opacity: 1;
 
@@ -73,3 +73,18 @@ ul{
     list-style-type: none;
 }
 
+.password-container {
+    position: relative;
+}
+
+.eye{
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}
