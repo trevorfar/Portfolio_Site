@@ -375,7 +375,7 @@ def forgot():
             body = f"Beep Boop, \n\n Please click this link to reset your password: {reset_link}"
             message = Mail(
                     from_email='trevorfariasbot@gmail.com',
-                    to_emails=[recipient], subject="Password Reset",plain_text_content=body)
+                    to_emails=[recipient], subject="Password Reset", plain_text_content=body)
             
             try:
                 sg = SendGridAPIClient(os.environ.get('pass'))
