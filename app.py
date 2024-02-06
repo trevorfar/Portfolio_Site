@@ -367,58 +367,39 @@ def generate_reset_token():
 @app.route('/forgottenPassword', methods=['GET', 'POST'])
 def forgot():
     if request.method == "POST": 
-        sg_api_key = os.getenv("SEND_GRID_APIKEY")
-        body = "TEST TEST TEST "
-        message = Mail(
-                from_email='em3893@trevorfarias.com',
-                to_emails='trevorof@yahoo.com', subject="Password Reset", html_content=body)
-        
-        try:
+        user1 = Users.query.filter_by(email=request.form.get("email")).first()
+
+        if user1 is not None:
+            reset_token = generate_reset_token()
+            user1.reset_token = reset_token
+            db.session.commit()
+
+            reset_link = f'https://trevorfarias.com/reset?token={reset_token}'
+
+            recipient = user1.email
+            body = f"Beep Boop, \n\n Please click this link to reset your password: {reset_link}"
+            
+            sg_api_key = os.getenv("SEND_GRID_APIKEY")
+
+            message = Mail(
+                    from_email='em3893@trevorfarias.com',
+                    to_emails=[recipient], 
+                    subject="Password Reset", 
+                    html_content=body)
+            
+
+            try:
                 sg = SendGridAPIClient(api_key=sg_api_key)
                 response = sg.send(message)
                 print(response.status_code)
                 print(response.body)
                 print(response.headers)
-        except Exception as e:
+            except Exception as e:
                 print(str(e))
 
 
-        # user1 = Users.query.filter_by(
-        #         email=request.form.get("email")).first()
-
-        # if user1 is not None:
-        #     reset_token = generate_reset_token()
-        #     user1.reset_token = reset_token
-        #     db.session.commit()
-
-        #     reset_link = f'https://trevorfarias.com/reset?token={reset_token}'
-
-        #     recipient = user1.email
-        #     flash(f"E:{user1.email}")
-        #     body = f"Beep Boop, \n\n Please click this link to reset your password: {reset_link}"
-            
-        #     message = Mail(
-        #             from_email='em3893@trevorfarias.com',
-        #             to_emails=[recipient], subject="Password Reset", html_content=body)
-            
-        #     sg_api_key = os.getenv("SEND_GRID_APIKEY")
-
-        #     try:
-        #         sg = SendGridAPIClient(api_key=sg_api_key)
-        #         response = sg.send(message)
-        #         print(response.status_code)
-        #         print(response.body)
-        #         print(response.headers)
-        #     except Exception as e:
-        #         print(str(e))
-
-        # else: 
-        #     print('whoopsies')
-        #     flash('invalid')
-
         return redirect(url_for('login'))
     return render_template('reset_password.html')
-
 
 @app.route('/reset', methods=['GET', 'POST'])
 def reset_pass():
