@@ -26,6 +26,8 @@ login_manager.init_app(app)
 
 
 
+load_dotenv()
+
 expHistory = []
 resHistory = []
 
@@ -372,7 +374,7 @@ def forgot():
             reset_token = generate_reset_token()
             user1.reset_token = reset_token
             db.session.commit()
-            reset_link = f'https://trevorfarias.com/reset?token={reset_token}'
+            reset_link = f'trevorfarias.com/reset?token={reset_token}'
 
             recipient = user1.email
             body = f"Beep Boop, \n\n Please click this link to reset your password: {reset_link}"
@@ -380,8 +382,10 @@ def forgot():
                     from_email='trevorfariasbot@gmail.com',
                     to_emails=[recipient], subject="Password Reset", html_content=body)
             
+            sg_api_key = os.getenv("SENDGRID_API_KEY")
+
             try:
-                sg = SendGridAPIClient(os.environ.get('SEND_GRID_APIKEY'))
+                sg = SendGridAPIClient(api_key=sg_api_key)
                 response = sg.send(message)
                 print(response.status_code)
                 print(response.body)
