@@ -368,10 +368,10 @@ def forgot():
             reset_token = generate_reset_token()
             user1.reset_token = reset_token
             db.session.commit()
-            reset_link = f'http://127.0.0.1:5000/reset?token={reset_token}'
+            reset_link = f'https://trevorfarias.com/reset?token={reset_token}'
 
             recipient = user1.email
-            body = f"Beep Boop, <br><br> Please click this link to reset your password: {reset_link}"
+            body = f"Beep Boop, \n\n Please click this link to reset your password: {reset_link}"
             msg = Message("Password Reset",
                     sender ='trevorfariasbot@gmail.com',
                     recipients=[recipient], body=body)
