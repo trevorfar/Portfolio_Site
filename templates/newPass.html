@@ -43,7 +43,7 @@
     <div class="row justify-content-center">
         <div class="col-md-4">
             <div class="card">
-                <h3 class="display-4 text-center">Enter Email</h3>
+                <h3 class="display-4 text-center">Create password</h3>
                 <div class="card-body">
                     <form method="POST" action="/reset">
                         <div class="form-group {% if passwordErr == 'invalid' %} invalid {% endif %}">
@@ -51,7 +51,7 @@
                             <div class="password-container">
 
                             <input class="form-control form-control-lg" type="password" name="password" id="password"
-                                placeholder="Enter new password" autofocus="" required>
+                                placeholder="Enter new password" autofocus="" autocomplete="off" required>
 
                                 
                                 <span class="eye" onclick="togglePasswordVisibility(this)">&#128374;</span>

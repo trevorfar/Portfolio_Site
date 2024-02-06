@@ -411,20 +411,18 @@ def reset_pass():
     if request.method == 'POST':
         token=session.get('token')
         if not token:
-            print("shouldnt get here")
             return render_template('login.html')
             
         new_password = request.form.get('password')
         user1 = Users.query.filter_by(reset_token=token).first()
 
         if(passwordValid(new_password)):
-
             user1.password = generate_password_hash(new_password, method='pbkdf2:sha256')
-            user1.reset_token = ""
+            user1.reset_token = " "
             db.session.commit()
 
-            flash('Your password has been successfully reset.')
             return redirect(url_for('login'))
+   
     passwordError='invalid'
     return render_template('newPass.html', token=token, passwordErr=passwordError)
     
