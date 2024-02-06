@@ -24,6 +24,8 @@ migrate = Migrate(app, db)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+
+
 load_dotenv()
 
 expHistory = []
@@ -345,19 +347,22 @@ def signup_post():
 def logout():
     logout_user()
     return redirect(url_for("index"))
-mail = Mail(app)
+# mail = Mail(app)
 
-app.config['MAIL_SERVER']='smtp.sendgrid.net'
-app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = 'apikey'
-emailPas = os.environ.get('pass')
-app.config['MAIL_PASSWORD'] = emailPas
-app.config['MAIL_USE_TLS'] = False
-app.config['MAIL_USE_SSL'] = True  
+
+# app.config['MAIL_SERVER']='smtp.sendgrid.net'
+# app.config['MAIL_PORT'] = 465
+# app.config['MAIL_USERNAME'] = 'apikey'
+# emailPas = os.environ.get('pass')
+# app.config['MAIL_PASSWORD'] = emailPas
+# app.config['MAIL_USE_TLS'] = False
+# app.config['MAIL_USE_SSL'] = True  
 
 
 def generate_reset_token():
     return secrets.token_urlsafe(32)
+
+
 
 @app.route('/forgottenPassword', methods=['GET', 'POST'])
 def forgot():
@@ -375,10 +380,10 @@ def forgot():
             body = f"Beep Boop, \n\n Please click this link to reset your password: {reset_link}"
             message = Mail(
                     from_email='trevorfariasbot@gmail.com',
-                    to_emails=[recipient], subject="Password Reset", plain_text_content=body)
+                    to_emails=[recipient], subject="Password Reset", html_content=body)
             
             try:
-                sg = SendGridAPIClient(os.environ.get('pass'))
+                sg = SendGridAPIClient(os.environ.get('SEND_GRID_APIKEY'))
                 response = sg.send(message)
                 print(response.status_code)
                 print(response.body)
