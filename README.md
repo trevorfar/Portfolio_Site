@@ -7,3 +7,5 @@ Sources: https://www.digitalocean.com/community/tutorials/how-to-make-a-web-appl
 Updating DB: 
 flask db migrate -m
 flask db upgrade 
+
+deploy_on_push=true
