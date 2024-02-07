@@ -402,6 +402,8 @@ def forgot():
     return render_template('reset_password.html')
 
 @app.route('/game', methods=['GET', 'POST'])
+def game():
+    return render_template("game.html")
 
 @app.route('/reset', methods=['GET', 'POST'])
 def reset_pass():
