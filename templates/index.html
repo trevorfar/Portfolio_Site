@@ -3,28 +3,59 @@
 
 <link rel="stylesheet" href="{{ url_for('static', filename='css/indexStyle.css') }}">
 
-    <div class="parallax mx-auto">
-    
+<script>
+    window.onload = function() {
+        if ((/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))) {
+        var popupShown = localStorage.getItem('popupShown');
+        if (!popupShown) {
+            document.getElementById('popup').style.display = 'block';
+            localStorage.setItem('popupShown', true);
+          }
+        }
+      }
+      function closePopup() {
+        document.getElementById('popup').style.display = 'none';
+      }
+
+</script>
+
+
+<div id="popup" class="popup">
+    <div class="popup-content">
+        <span class="close" onclick="closePopup()">&times;</span>
+        <p>Hello!</p>
+        <p>I can see you've logged in from a mobile device. Please note, I currently haven't optimized the site to allow for this</p>
+        <p>Feel free to keep browsing but keep in mind the site might be missing some key functionality</p>
+        <p>-Trevor</p>
     </div>
-    <div class="textContainer mx-auto">
-        <p>
-        Hello  ! 
-        </p>    
-        <p>
-        For many years I've had an interest in website development, so I created this site to enhance my proficiency in Object-Oriented Programming and databases. This platform serves as a repository for a collection of my web-compatible projects, while also functioning as a practical learning ground.
-        </p> 
-        <p>
-        I used languages such as HTML, CSS, and JavaScript for the front-end, with the site's backend being structured on the Flask framework with SQL employed for database management. 
-        </p>
-        <p>
-        Currently, the database is integrated solely with my calculator app, but I have many ideas for the future, most of which require a strong database. 
-        </p>
-        <p>
+</div>
+
+
+<div class="parallax mx-auto">
+</div>
+<div class="textContainer mx-auto">
+    <p>
+        Hello !
+    </p>
+    <p>
+        For many years I've had an interest in website development, so I created this site to enhance my proficiency in
+        Object-Oriented Programming and databases. This platform serves as a repository for a collection of my
+        web-compatible projects, while also functioning as a practical learning ground.
+    </p>
+    <p>
+        I used languages such as HTML, CSS, and JavaScript for the front-end, with the site's backend being structured
+        on the Flask framework with SQL employed for database management.
+    </p>
+    <p>
+        Currently, the database is integrated solely with my calculator app, but I have many ideas for the future, most
+        of which require a strong database.
+    </p>
+    <p>
         Stay tuned for future updates and additions to this project.
-        </p>
-        <p>
+    </p>
+    <p>
         - Trevor
-        </p>
-    </div>
-    
+    </p>
+</div>
+
 {% endblock %}
