@@ -385,7 +385,7 @@ def forgot():
             message = Mail(
                     from_email='em3893@trevorfarias.com',
                     to_emails=[recipient], 
-                    subject="Password Reset", 
+                    subject="Password Reset - Trevor Farias", 
                     html_content=body)
             
             try:
