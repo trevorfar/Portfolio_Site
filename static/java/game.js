@@ -147,7 +147,7 @@ else
     player.anims.play('turn');
 }
 
-
+//On click it sets the upkey to false, then does the jump, in this case its either double jump or single then cursor comes up and the key is rendered false 
 if (cursors.up.isDown && !upKeyJustPressed){ 
     upKeyJustPressed = true; 
 
