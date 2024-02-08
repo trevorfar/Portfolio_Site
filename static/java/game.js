@@ -20,7 +20,7 @@ var config = {
 var player;
 var stars;
 var platforms;
-var cursors;
+var keys;
 var bombs;
 var gameOver = false;
 var score = 0;
@@ -30,8 +30,7 @@ var game = new Phaser.Game(config);
 
 
 
-function preload ()
-{
+function preload() {
     this.load.image('sky', 'static/assets/sky.png');
     this.load.image('ground', 'static/assets/platform.png');
     this.load.image('star', 'static/assets/star.png');
@@ -42,8 +41,7 @@ function preload ()
 }
 
 
-function create ()
-{
+function create() {
     this.add.image(400, 300, 'sky');
 
     platforms = this.physics.add.staticGroup();
@@ -54,13 +52,13 @@ function create ()
 
 
     player = this.physics.add.sprite(100, 400, 'dude');
-    
+
     player.doubleJump = false;
     player.canJump = false;
 
     //player.setBounce(0.1);
     player.setCollideWorldBounds(true);
-    
+
     this.physics.add.collider(player, platforms);
 
     this.anims.create({
@@ -72,7 +70,7 @@ function create ()
 
     this.anims.create({
         key: 'turn',
-        frames: [ { key: 'dude', frame: 4 } ],
+        frames: [{ key: 'dude', frame: 4 }],
         frameRate: 20
     });
 
@@ -83,9 +81,18 @@ function create ()
         repeat: -1
     });
 
-    cursors = this.input.keyboard.createCursorKeys();
+    keys = this.input.keyboard.createCursorKeys();
 
-
+    keys = {
+        ...keys,
+        ...this.input.keyboard.addKeys({
+            'up': Phaser.Input.Keyboard.KeyCodes.W,
+            'down': Phaser.Input.Keyboard.KeyCodes.S,
+            'left': Phaser.Input.Keyboard.KeyCodes.A,
+            'right': Phaser.Input.Keyboard.KeyCodes.D
+        })
+    };
+    
     stars = this.physics.add.group({
         key: 'star',
         repeat: 3,
@@ -107,92 +114,89 @@ function create ()
     onFloor = this.add.text(16, 136, 'On floor: ', { fontSize: '32px', fill: '#000' })
 
     this.physics.add.collider(bombs, platforms);
-    this.physics.add.collider(player, bombs, hitBomb, null, this);
+    this.physics.add.collider(player, bombs, hitBomb);
+    this.physics.add.collider(bombs, bombs);
 
 
 
 }
-var upKeyJustPressed = false; 
+
+var upKeyJustPressed = false;
 var jumpTimer = 0;
 
-function update ()
-{
+function update() {
 
-    if(player.body.onFloor()){
+    if (player.body.onFloor()) {
         player.canJump = true;
         player.doubleJump = false;
         upKeyJustPressed = false;
-     }
+    }
 
     jumpIndicator();
-    
-    if(gameOver){
+
+    if (gameOver) {
         return;
     }
 
-    if (cursors.left.isDown)
-{
-    player.setVelocityX(-160);
-    player.anims.play('left', true);
-}
-
-else if (cursors.right.isDown)
-{
-    player.setVelocityX(160);
-    player.anims.play('right', true);
-}
-else
-{
-    player.setVelocityX(0);
-    player.anims.play('turn');
-}
-
-//On click it sets the upkey to false, then does the jump, in this case its either double jump or single then cursor comes up and the key is rendered false 
-if (cursors.up.isDown && !upKeyJustPressed){ 
-    upKeyJustPressed = true; 
-
-    // First Jump   
-    if (player.body.onFloor() && player.canJump){
-        player.canJump = false;
-        player.setVelocityY(-330);
-        cursors.up.isUp;
+    if (keys.left.isDown) {
+        player.setVelocityX(-160);
+        player.anims.play('left', true);
     }
 
-    // Double Jump
-    else if (!player.doubleJump && (!player.body.onFloor()) ){
-        player.canJump = false;
-        player.doubleJump = true;
-        player.setVelocityY(-300);
-        displayScore(50);
-}
-}
-if (cursors.up.isUp) {
-    upKeyJustPressed = false;
-}
+    else if (keys.right.isDown) {
+        player.setVelocityX(160);
+        player.anims.play('right', true);
+    }
+    else {
+        player.setVelocityX(0);
+        player.anims.play('turn');
+    }
+
+    //On click it sets the upkey to false, then does the jump, in this case its either double jump or single then cursor comes up and the key is rendered false 
+    if ((keys.up.isDown && !upKeyJustPressed)) { //
+        upKeyJustPressed = true;
+
+        // First Jump   
+        if (player.body.onFloor() && player.canJump) {
+            player.canJump = false;
+            player.setVelocityY(-330);
+        }
+
+        // Double Jump
+        else if (!player.doubleJump && !player.body.onFloor()) {
+            player.canJump = false;
+            player.doubleJump = true;
+            player.setVelocityY(-300);
+            displayScore(50);
+        }
+    }
+    if (keyUp(keys)) { 
+        upKeyJustPressed = false;
+    }
 
 }
-
-function displayScore(x)
-{
+function keyUp(x) {
+    if (x.up.isUp) {
+        return true;
+    }
+}
+function displayScore(x) {
     score += x;
     scoreText.setText('Score: ' + score);
 
 }
-function jumpIndicator()
-{
+function jumpIndicator() {
     jumpText.setText('Double jump: ' + player.doubleJump + ' ' + 'Can Jump: ' + player.canJump);
     onFloor.setText('On floor: ' + player.body.onFloor())
 }
 
-function collectStar (player, star)
-{
+function collectStar(player, star) {
     star.disableBody(true, true);
 
     score += 10;
     scoreText.setText('Score: ' + score);
 
-    if (stars.countActive(true) === 0)
-    {
+    if (stars.countActive(true) === 0) {
         stars.children.iterate(function (child) {
 
             child.enableBody(true, child.x, 0, true, true);
@@ -201,7 +205,7 @@ function collectStar (player, star)
 
         var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
 
-        var bomb = bombs.create(x, 16, 'bomb');
+        var bomb = bombs.create(x, 2, 'bomb');
         bomb.setBounce(1);
         bomb.setCollideWorldBounds(true);
         bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
@@ -209,13 +213,12 @@ function collectStar (player, star)
     }
 }
 
-    function hitBomb (player, bomb)
-    {
-        this.physics.pause();
+function hitBomb(player, bomb) {
+    // this.physics.pause();
 
-        player.setTint(0xff0000);
+    player.setTint(0xff0000);
 
-        player.anims.play('turn');
+    // player.anims.play('turn');
 
-        gameOver = true;
-    }
+    // gameOver = true;
+}

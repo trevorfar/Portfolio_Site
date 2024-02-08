@@ -297,7 +297,7 @@ def login():
                 return redirect(url_for("index"))
         
         passwordError = "invalid"
-        return render_template("login.html", username=username, password=request.form.get("password"), passwordErr=passwordError)
+        return render_template("login.html", username=request.form.get("username"), password=request.form.get("password"), passwordErr=passwordError)
     return render_template("login.html")
 
 def uniqueEmail(email):
