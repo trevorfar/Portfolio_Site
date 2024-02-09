@@ -1,78 +1,107 @@
+var config = {
+    type: Phaser.AUTO,
+    width: 960,
+    height: 640,
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 450 },
+            debug: false
+        }
+    },
 
-@app.route('/forgottenPassword', methods=['GET', 'POST'])
-def forgot():
-    if request.method == "POST": 
-        user1 = Users.query.filter_by(
-                email=request.form.get("email")).first()
+    scene: {
+        preload: preload,
+        create: create,
+        update: update
+    }
+};
 
-        if user1 is not None:
-            reset_token = generate_reset_token()
-            user1.reset_token = reset_token
-            db.session.commit()
-
-            reset_link = f'https://trevorfarias.com/reset?token={reset_token}'
-
-            recipient = user1.email
-            flash(f"E:{user1.email}")
-            body = f"Beep Boop, \n\n Please click this link to reset your password: {reset_link}"
-            
-            message = Mail(
-                    from_email='em3893@trevorfarias.com',
-                    to_emails=[recipient], subject="Password Reset", html_content=body)
-            
-            sg_api_key = os.getenv("SEND_GRID_APIKEY")
-
-            try:
-                sg = SendGridAPIClient(api_key=sg_api_key)
-                response = sg.send(message)
-                print(response.status_code)
-                print(response.body)
-                print(response.headers)
-            except Exception as e:
-                print(str(e))
-
-        else: 
-            print('whoopsies')
-            flash('invalid')
-
-        return redirect(url_for('login'))
-    return render_template('reset_password.html')
+var game = new Phaser.Game(config);
 
 
 
-@app.route('/forgottenPassword', methods=['GET', 'POST'])
-def forgot():
-    if request.method == "POST": 
-        user1 = Users.query.filter_by(email=request.form.get("email")).first()
+function preload() {
 
-        if user1 is not None:
-            # reset_token = generate_reset_token()
-            # user1.reset_token = reset_token
-            # db.session.commit()
+    this.load.tilemapTiledJSON('map', 'static/assets/map1.json');
+    this.load.spritesheet('dude', 'static/assets/dude.png', { frameWidth: 32, frameHeight: 48 });
+   
+    
+}
 
-            # reset_link = f'https://trevorfarias.com/reset?token={reset_token}'
 
-            recipient = user1.email
-            body = "JUST UPDATED THIS"
-            # body = f"Beep Boop, \n\n Please click this link to reset your password: {reset_link}"
-            
-            sg_api_key = os.getenv("SEND_GRID_APIKEY")
+var player;
 
-            message = Mail(
-                    from_email='em3893@trevorfarias.com',
-                    to_emails=[recipient], 
-                    subject="Password Reset", 
-                    html_content=body)
-            
-            try:
-                sg = SendGridAPIClient(api_key=sg_api_key)
-                response = sg.send(message)
-                print(response.status_code)
-                print(response.body)
-                print(response.headers)
-            except Exception as e:
-                print(str(e))
 
-            return redirect(url_for('login'))
-        return redirect(url_for('index'))
-    return render_template('reset_password.html')
+function create() {
+
+    
+    const map = this.make.tilemap({key:"map", tileWidth: 32, tileHeight: 32})
+    
+    
+    const tileset = map.addTilesetImage("background", "map");
+
+
+    const layer = map.createLayer("Books", tileset, 0, 0);
+    
+
+    player = this.physics.add.sprite(100, 400, 'dude');
+    player.setCollideWorldBounds(true);
+
+    
+
+
+    this.anims.create({
+
+        key: 'left',
+        frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
+        frameRate: 10,
+        repeat: -1
+    });
+
+    this.anims.create({
+        key: 'turn',
+        frames: [{ key: 'dude', frame: 4 }],
+        frameRate: 20
+    });
+
+    this.anims.create({
+        key: 'right',
+        frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
+        frameRate: 10,
+        repeat: -1
+    });
+
+    keys = this.input.keyboard.createCursorKeys();
+
+    keys = {
+        ...keys,
+        ...this.input.keyboard.addKeys({
+            'up': Phaser.Input.Keyboard.KeyCodes.W,
+            'down': Phaser.Input.Keyboard.KeyCodes.S,
+            'left': Phaser.Input.Keyboard.KeyCodes.A,
+            'right': Phaser.Input.Keyboard.KeyCodes.D
+        })
+    };
+    
+}
+
+
+function update() {
+
+    if (keys.left.isDown) {
+        player.setVelocityX(-160);
+        player.anims.play('left', true);
+    }
+
+    else if (keys.right.isDown) {
+        player.setVelocityX(160);
+        player.anims.play('right', true);
+    }
+    else {
+        player.setVelocityX(0);
+        player.anims.play('turn');
+    }
+
+
+}
