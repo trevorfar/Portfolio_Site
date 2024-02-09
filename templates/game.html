@@ -6,10 +6,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser-arcade-physics.min.js"></script>
-  <script src="{{ url_for('static', filename='java/game.js') }}"></script>
+
+  
+  <script src="{{ url_for('static', filename='gameJs/preload.js') }}"></script>
+  <script src="{{ url_for('static', filename='gameJs/gameScene.js') }}"></script>
+  <script src="{{ url_for('static', filename='gameJs/config.js') }}"></script>
+
+  <script src="{{ url_for('static', filename='gameJs/utilities.js') }}"></script>
+
   <link rel="stylesheet" href="{{ url_for('static', filename='css/game.css') }}">
 
-  <title>  Game  </title>
+  <title> Game </title>
 </head>
 
 
@@ -26,4 +33,5 @@
 
 
 </body>
+
 </html>
