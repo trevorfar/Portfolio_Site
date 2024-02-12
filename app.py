@@ -12,8 +12,10 @@ from flask_mail import Message, Mail
 import secrets
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+import matplotlib.pyplot as plt
+import numpy as np
 
-#yes
+
 app = Flask(__name__)
 
 app.secret_key = os.environ.get('secret_key')
@@ -180,6 +182,65 @@ def printResp(obj):
 
 last_stock_symbol = None
 
+@app.route('/getGraph', methods = ['GET'])
+def getGraph():
+    global last_stock_symbol
+    api_key = os.environ.get('API_KEY')
+    stock_symbol = request.args.get('symbol')
+    if not stock_symbol:
+        return "Please provide a valid stock symbol"
+
+    if stock_symbol == last_stock_symbol:
+        return "Please provide a new stock symbol"
+    
+    base_url = "https://www.alphavantage.co/query"
+    function = "TIME_SERIES_WEEKLY_ADJUSTED" 
+    
+    params = {
+        "function": function,
+        "symbol": stock_symbol,
+        "apikey": api_key,
+    }
+    
+    response = requests.get(base_url, params=params)
+
+    data = response.json()
+    weekly_data = data['Weekly Adjusted Time Series']
+
+    dates = list(weekly_data.keys())
+    closingPrice = [float(weekly_data[date]['5. adjusted close']) for date in dates]
+    plt.figure(figsize=(10, 6))
+    plt.plot(dates, closingPrice, marker='o', linestyle='-')
+    plt.title(f'Weekly Adjusted Closing Prices for {stock_symbol}')
+    plt.xlabel('Date')
+    plt.ylabel('Adjusted Closing Price (USD)')
+    plt.xticks(rotation=45)
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
+
+    # if response.status_code == 200:
+    #     try:    
+    #         data = response.json()
+    #         #print(data)
+
+    #         if "Global Quote" in data:
+    #             global_quote = data["Global Quote"]
+    #             last_stock_symbol = stock_symbol
+
+    #             if not global_quote:
+    #                 return "Empty response for the given symbol. It may not be a valid stock symbol."
+                
+    #             return  render_template('app4.html', price=data["Global Quote"]["05. price"], title = data["Global Quote"]["01. symbol"], change = data["Global Quote"]["09. change"])
+    #         else:
+    #             return "symbol not found"
+    #     except json.JSONDecodeError: 
+    #         return f"Error: {response.status_code}"
+
+
+
+
 
 @app.route('/getPrice', methods = ['GET'])
 def getStockPrice():
@@ -227,6 +288,14 @@ def getStockPrice():
                 return "symbol not found"
         except json.JSONDecodeError: 
             return f"Error: {response.status_code}"
+
+
+
+@app.route('/TESTING', methods=['GET'])
+def TESTING():
+    #getGraph()
+    getStockPrice()
+
 
 def usernameValid(username): 
     if(len(username) <= 12 and len(username) >= 3):
@@ -430,4 +499,8 @@ def reset_pass():
    
     passwordError='invalid'
     return render_template('newPass.html', token=token, passwordErr=passwordError)
+
+@app.route('/unityGame', methods=['POST', 'GET'])
+def uGam():
+    return render_template('unityGame.html')
     

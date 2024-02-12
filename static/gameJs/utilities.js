@@ -2,7 +2,6 @@
 
 
 
-
 function keyUp(x) {
     if (x.up.isUp) {
         return true;
