@@ -182,8 +182,19 @@ def printResp(obj):
 
 last_stock_symbol = None
 
+# plt.figure(figsize=(10, 6))
+#     plt.plot(dates, closingPrice, marker='o', linestyle='-')
+#     plt.title(f'Weekly Adjusted Closing Prices for {stock_symbol}')
+#     plt.xlabel('Date')
+#     plt.ylabel('Adjusted Closing Price (USD)')
+#     plt.xticks(rotation=45)
+#     plt.grid(True)
+#     plt.tight_layout()
+#     plt.show()
+
+
 @app.route('/getGraph', methods = ['GET'])
-def getGraph():
+def getGraph(org):
     global last_stock_symbol
     api_key = os.environ.get('API_KEY')
     stock_symbol = request.args.get('symbol')
@@ -209,41 +220,19 @@ def getGraph():
 
     dates = list(weekly_data.keys())
     closingPrice = [float(weekly_data[date]['5. adjusted close']) for date in dates]
-    plt.figure(figsize=(10, 6))
-    plt.plot(dates, closingPrice, marker='o', linestyle='-')
-    plt.title(f'Weekly Adjusted Closing Prices for {stock_symbol}')
-    plt.xlabel('Date')
-    plt.ylabel('Adjusted Closing Price (USD)')
-    plt.xticks(rotation=45)
-    plt.grid(True)
-    plt.tight_layout()
-    plt.show()
-
-
-    # if response.status_code == 200:
-    #     try:    
-    #         data = response.json()
-    #         #print(data)
-
-    #         if "Global Quote" in data:
-    #             global_quote = data["Global Quote"]
-    #             last_stock_symbol = stock_symbol
-
-    #             if not global_quote:
-    #                 return "Empty response for the given symbol. It may not be a valid stock symbol."
-                
-    #             return  render_template('app4.html', price=data["Global Quote"]["05. price"], title = data["Global Quote"]["01. symbol"], change = data["Global Quote"]["09. change"])
-    #         else:
-    #             return "symbol not found"
-    #     except json.JSONDecodeError: 
-    #         return f"Error: {response.status_code}"
+   
+    processed_graph_data = {
+        'dates': dates,
+        'closing_price': closingPrice
+    }
+    return processed_graph_data
 
 
 
 
 
 @app.route('/getPrice', methods = ['GET'])
-def getStockPrice():
+def getStockPrice(org):
 
     global last_stock_symbol
 
@@ -270,31 +259,57 @@ def getStockPrice():
 
     print(response.status_code)
     printResp(response.json())
+    data = response.json()
 
-    if response.status_code == 200:
-        try:    
-            data = response.json()
-            print(data)
+    processed_price_data = {
+        'price': data["Global Quote"]["05. price"],
+        'title': data["Global Quote"]["01. symbol"],
+        'change': data["Global Quote"]["09. change"]
+    }
+    return processed_price_data
 
-            if "Global Quote" in data:
-                global_quote = data["Global Quote"]
-                last_stock_symbol = stock_symbol
 
-                if not global_quote:
-                    return "Empty response for the given symbol. It may not be a valid stock symbol."
+
+
+    # if response.status_code == 200:
+    #     try:    
+    #         data = response.json()
+    #         print(data)
+
+    #         if "Global Quote" in data:
+    #             global_quote = data["Global Quote"]
+    #             last_stock_symbol = stock_symbol
+
+    #             if not global_quote:
+    #                 return "Empty response for the given symbol. It may not be a valid stock symbol."
                 
-                return  render_template('app4.html', price=data["Global Quote"]["05. price"], title = data["Global Quote"]["01. symbol"], change = data["Global Quote"]["09. change"])
-            else:
-                return "symbol not found"
-        except json.JSONDecodeError: 
-            return f"Error: {response.status_code}"
+    #             return  render_template('app4.html', price=data["Global Quote"]["05. price"], title = data["Global Quote"]["01. symbol"], change = data["Global Quote"]["09. change"])
+    #         else:
+    #             return "symbol not found"
+    #     except json.JSONDecodeError: 
+    #         return f"Error: {response.status_code}" 
 
 
 
-@app.route('/TESTING', methods=['GET'])
-def TESTING():
-    #getGraph()
-    getStockPrice()
+@app.route('/stockRoute', methods=['GET'])
+def parseBothRoutes():
+    stock_symbol = request.args.get('symbol')
+    if not stock_symbol:
+        return "Please provide a valid stock symbol"
+    
+    graph_data = getGraph(stock_symbol)
+    price_data = getStockPrice(stock_symbol)
+
+    combined_data = {
+        'graph_data': graph_data,
+        'price_data': price_data
+    }
+
+    #return  render_template('app4.html', price=data["Global Quote"]["05. price"], title = data["Global Quote"]["01. symbol"], change = data["Global Quote"]["09. change"])
+
+    return jsonify(combined_data)
+
+    #return  render_template('app4.html', price=data["Global Quote"]["05. price"], title = data["Global Quote"]["01. symbol"], change = data["Global Quote"]["09. change"])
 
 
 def usernameValid(username): 

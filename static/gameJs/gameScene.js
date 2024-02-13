@@ -22,9 +22,10 @@ function create() {
     
     player = this.physics.add.sprite(100, 400, 'dude'); 
 
-    console.log(tablesLayer.properties);
+    //console.log(tablesLayer.properties);
+    console.log(tablesLayer.getTilesWithin().filter(t => t.properties.collides))
 
-    tablesLayer.setCollisionByProperty({collides: true});
+    tablesLayer.setCollisionByProperty({collides: 'true'});
     this.physics.add.collider(player, tablesLayer);
 
     const debugGraphics = this.add.graphics().setAlpha(0.7);
