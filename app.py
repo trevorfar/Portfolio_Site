@@ -268,9 +268,6 @@ def getStockPrice(org):
     }
     return processed_price_data
 
-
-
-
     # if response.status_code == 200:
     #     try:    
     #         data = response.json()
@@ -305,12 +302,21 @@ def parseBothRoutes():
         'price_data': price_data
     }
 
+    plot = jsonify(graph_data)
+
+    dates = plot.json["dates"][::-1]
+    closing_prices = plot.json["closing_price"][::-1]
+
+    plt.plot(dates, closing_prices)
+    plt.xlabel('Date')
+    plt.ylabel('Closing Price')
+    plt.title('Stock Closing Prices (USD)')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.show()
+    return plot
+
     #return  render_template('app4.html', price=data["Global Quote"]["05. price"], title = data["Global Quote"]["01. symbol"], change = data["Global Quote"]["09. change"])
-
-    return jsonify(combined_data)
-
-    #return  render_template('app4.html', price=data["Global Quote"]["05. price"], title = data["Global Quote"]["01. symbol"], change = data["Global Quote"]["09. change"])
-
 
 def usernameValid(username): 
     if(len(username) <= 12 and len(username) >= 3):
