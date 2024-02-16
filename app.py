@@ -13,8 +13,10 @@ import secrets
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 import matplotlib.pyplot as plt
+from matplotlib.dates import DateFormatter
 import numpy as np
-
+from io import BytesIO
+import base64
 
 app = Flask(__name__)
 
@@ -288,35 +290,50 @@ def getStockPrice(org):
 
 
 
-@app.route('/stockRoute', methods=['GET'])
+@app.route('/stockRoute', methods=['GET', 'POST'])
 def parseBothRoutes():
     stock_symbol = request.args.get('symbol')
     if not stock_symbol:
-        return "Please provide a valid stock symbol"
+        return "Please provide a valid stock symbol"        
     
-    graph_data = getGraph(stock_symbol)
-    price_data = getStockPrice(stock_symbol)
+    elif stock_symbol == None:
+    # graph_data = getGraph(stock_symbol)
+    # price_data = getStockPrice(stock_symbol)
 
-    combined_data = {
-        'graph_data': graph_data,
-        'price_data': price_data
-    }
+    # combined_data = {
+    #     'graph_data': graph_data,
+    #     'price_data': price_data
 
-    plot = jsonify(graph_data)
+        with open('test.json', 'r') as file:
+        # Load the JSON data into a Python dictionary
+            data = json.load(file)
 
-    dates = plot.json["dates"][::-1]
-    closing_prices = plot.json["closing_price"][::-1]
+        plot = jsonify(data)
 
-    plt.plot(dates, closing_prices)
-    plt.xlabel('Date')
-    plt.ylabel('Closing Price')
-    plt.title('Stock Closing Prices (USD)')
-    plt.xticks(rotation=45)
-    plt.tight_layout()
-    plt.show()
-    return plot
+        dates = plot.json["dates"][::4][::-1]
+        closing_prices = plot.json["closing_price"][::4][::-1]
 
-    #return  render_template('app4.html', price=data["Global Quote"]["05. price"], title = data["Global Quote"]["01. symbol"], change = data["Global Quote"]["09. change"])
+        plt.figure(figsize=(10, 6))
+        plt.plot(dates, closing_prices)
+        plt.xlabel('Date')
+        plt.ylabel('Closing Price')
+        plt.title('Stock Closing Prices (USD)')
+
+        plt.xticks(range(len(dates)-1, -1, -52), [dates[i] for i in range(len(dates)-1, -1, -52)], rotation=45)
+
+        plt.tight_layout()
+
+        buffer = BytesIO()
+        plt.savefig(buffer, format='png')
+        buffer.seek(0)
+
+        plot_data = base64.b64encode(buffer.read()).decode('utf-8')
+        return render_template('app4.html', plot_data=plot_data)
+    print("yup")
+    return render_template('app4.html', plot_data=None)
+
+    
+    
 
 def usernameValid(username): 
     if(len(username) <= 12 and len(username) >= 3):
