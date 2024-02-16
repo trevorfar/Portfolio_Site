@@ -276,7 +276,7 @@ def getStockPrice(org):
     #         if "Global Quote" in data:
     #             global_quote = data["Global Quote"]
     #             last_stock_symbol = stock_symbol
-
+#.
     #             if not global_quote:
     #                 return "Empty response for the given symbol. It may not be a valid stock symbol."
                 
