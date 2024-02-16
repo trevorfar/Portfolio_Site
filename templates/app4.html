@@ -18,6 +18,7 @@
 <textarea id="display" readonly style="text-align: right"> {{ price }} {{ title }} {{ change }} </textarea>
 </div>
 </div>
+
 {% if plot_data is not none %}
 <img src="data:image/png;base64, {{ plot_data }}" alt="Matplotlib Plot">
 {% endif %}

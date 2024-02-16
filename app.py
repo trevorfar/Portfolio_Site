@@ -175,7 +175,7 @@ def test():
 
 @app.route('/app4')
 def app4():
-    return render_template('app4.html')
+    return render_template('app4.html', plot_data=None)
 
 
 def printResp(obj):
@@ -288,24 +288,24 @@ def getStockPrice(org):
     #     except json.JSONDecodeError: 
     #         return f"Error: {response.status_code}" 
 
-
-
-@app.route('/stockRoute', methods=['GET', 'POST'])
-def parseBothRoutes():
-    stock_symbol = request.args.get('symbol')
-    if not stock_symbol:
-        return "Please provide a valid stock symbol"        
-    
-    elif stock_symbol == None:
-    # graph_data = getGraph(stock_symbol)
+ # graph_data = getGraph(stock_symbol)
     # price_data = getStockPrice(stock_symbol)
 
     # combined_data = {
     #     'graph_data': graph_data,
     #     'price_data': price_data
 
+
+
+@app.route('/stockRoute', methods=['GET', 'POST'])
+def parseBothRoutes():
+
+    stock_symbol = request.args.get('symbol')
+    if not stock_symbol:
+        return "Please provide a valid stock symbol"   
+       
+    if request.method=="GET":
         with open('test.json', 'r') as file:
-        # Load the JSON data into a Python dictionary
             data = json.load(file)
 
         plot = jsonify(data)
@@ -329,8 +329,10 @@ def parseBothRoutes():
 
         plot_data = base64.b64encode(buffer.read()).decode('utf-8')
         return render_template('app4.html', plot_data=plot_data)
-    print("yup")
-    return render_template('app4.html', plot_data=None)
+    
+    print("ERROR")
+    return redirect(url_for('index'))
+    
 
     
     
