@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %} Api App {% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style_apiApp.css') }}">
+
+<div class="container ">
+
+
+<form id="stockInputForm" action="/getPrice" method="GET">
+    <div>
+        <input type="text" pattern="[A-Za-z]+" name="symbol" id = "stockQuery" placeholder="Enter Symbol" maxlength="5">
+    </div>
+</form>
+
+<div>
+<textarea id="display" readonly style="text-align: right"> {{ price }} {{ title }} {{ change }} </textarea>
+</div>
+</div>
+
+
+
+<script src="{{ url_for('static', filename='java/apiLookup.js') }}"></script>
+
+
+{% endblock %}

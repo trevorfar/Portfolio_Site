@@ -205,7 +205,7 @@ def getGraph(org):
     if response.status_code == 429:
         return render_template("stock.html", message=message, plot_dat=None)   
     
-    if response.status_code == 200:
+    if response.status_code == 400:
         return 301
 
     data = response.json()
@@ -230,6 +230,7 @@ def parseBothRoutes():
    
     if request.method=="GET":
         graph_data = getGraph(stock_symbol)
+        
         if graph_data == 301:
             return render_template("stock.html", message="Invalid symbol", plot_data=None)   
         
