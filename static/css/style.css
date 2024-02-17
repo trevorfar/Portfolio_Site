@@ -5,6 +5,7 @@
     transition: color 0.3s ease; 
   }
   .navbar {
+    min-height: 50px;
     background-color: transparent !important ; 
     border-bottom: 1px solid black;
     width: 40%;
