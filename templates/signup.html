@@ -14,7 +14,7 @@
             textField[i].blur();
         }
 
-        {%if emailErr == 'invalid' %}
+        {% if emailErr == 'invalid' %}
         textField.namedItem("email").focus();
         {% elif usernameErr == 'invalid' %}
         textField.namedItem("username").focus();

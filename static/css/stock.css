@@ -1,13 +1,32 @@
-.container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    width: 50%;
-}
+
+body{
+    height: 600px;
+    background-image: url('../Images/calculatorBackground.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: auto;
+    }
+
 
 img {
-    max-width: 200%;
-    height: auto;
+    max-width: 100%;
+    
 }
 
+
+.description-container {
+    background-color: #f8f9fa; 
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+.description-container h3 {
+    color: #007bff; 
+}
+
+.description-container p {
+    color: black; 
+    text-align: left
+}
+    
