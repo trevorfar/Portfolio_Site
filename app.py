@@ -173,9 +173,9 @@ def update():
 def test():
     return render_template('test.html')
 
-@app.route('/app4')
-def app4():
-    return render_template('app4.html', plot_data=None)
+@app.route('/stock')
+def stock():
+    return render_template('stock.html', plot_data=None)
 
 
 def printResp(obj):
@@ -282,7 +282,7 @@ def getStockPrice(org):
     #             if not global_quote:
     #                 return "Empty response for the given symbol. It may not be a valid stock symbol."
                 
-    #             return  render_template('app4.html', price=data["Global Quote"]["05. price"], title = data["Global Quote"]["01. symbol"], change = data["Global Quote"]["09. change"])
+    #             return  render_template('stock.html', price=data["Global Quote"]["05. price"], title = data["Global Quote"]["01. symbol"], change = data["Global Quote"]["09. change"])
     #         else:
     #             return "symbol not found"
     #     except json.JSONDecodeError: 
@@ -328,7 +328,7 @@ def parseBothRoutes():
         buffer.seek(0)
 
         plot_data = base64.b64encode(buffer.read()).decode('utf-8')
-        return render_template('app4.html', plot_data=plot_data)
+        return render_template('stock.html', plot_data=plot_data)
     
     print("ERROR")
     return redirect(url_for('index'))
@@ -540,7 +540,5 @@ def reset_pass():
     passwordError='invalid'
     return render_template('newPass.html', token=token, passwordErr=passwordError)
 
-@app.route('/unityGame', methods=['POST', 'GET'])
-def uGam():
-    return render_template('unityGame.html')
+
     

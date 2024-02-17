@@ -3,11 +3,9 @@
 {% block title %} Api App {% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style_apiApp.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/stock.css') }}">
 
 <div class="container ">
-
-
 <form id="stockInputForm" action="/stockRoute" method="GET">
     <div>
         <input type="text" pattern="[A-Za-z]+" name="symbol" id = "stockQuery" placeholder="Enter Symbol" maxlength="5">
@@ -17,13 +15,13 @@
 <div>
 <textarea id="display" readonly style="text-align: right"> {{ price }} {{ title }} {{ change }} </textarea>
 </div>
-</div>
 
 {% if plot_data is not none %}
 <img src="data:image/png;base64, {{ plot_data }}" alt="Matplotlib Plot">
 {% endif %}
 
 <script src="{{ url_for('static', filename='java/apiLookup.js') }}"></script>
+</div>
 
 
 {% endblock %}
