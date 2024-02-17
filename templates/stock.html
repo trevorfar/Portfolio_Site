@@ -4,6 +4,11 @@
 
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/stock.css') }}">
+{% if message is not none %}
+<script>
+    alert('{{ message }}');
+</script>
+{% endif %}
 
 <div class="container mt-4">
     <div class="row">
@@ -38,11 +43,7 @@
 {% endif %}
 </div>
 
-{% if message is not none %}
-<script>
-    alert('{{ message }}');
-</script>
-{% endif %}
+
 
 <script src="{{ url_for('static', filename='java/apiLookup.js') }}"></script>
 {% endblock %}

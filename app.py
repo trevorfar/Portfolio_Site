@@ -203,10 +203,10 @@ def getGraph(org):
 
     response = requests.get(base_url, params=params)
     if response.status_code == 429:
-
         return render_template("stock.html", message=message, plot_dat=None)   
+    
     if response.status_code == 200:
-        render_template("stock.html", message=message2, plot_dat=None)
+        return 301
 
     data = response.json()
     weekly_data = data['Weekly Adjusted Time Series']
@@ -227,12 +227,13 @@ def parseBothRoutes():
     stock_symbol = request.args.get('symbol')
     if not stock_symbol:
         return "Please provide a valid stock symbol"   
-    
+   
     if request.method=="GET":
-        with open('test.json', 'r') as file:
-            data = json.load(file)
-
-        plot = jsonify(data)
+        graph_data = getGraph(stock_symbol)
+        if graph_data == 301:
+            return render_template("stock.html", message="Invalid symbol", plot_data=None)   
+        
+        plot = jsonify(graph_data)
 
         dates = plot.json["dates"][::4][::-1]
         closing_prices = plot.json["closing_price"][::4][::-1]
@@ -254,7 +255,7 @@ def parseBothRoutes():
         plot_data = base64.b64encode(buffer.read()).decode('utf-8')
         return render_template('stock.html', message=None, plot_data=plot_data)
     
-    return render_template("stock.html", message=None, plot_dat=None)   
+    return render_template("index.html")   
   
 
 def usernameValid(username): 
