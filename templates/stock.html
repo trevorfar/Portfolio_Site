@@ -38,5 +38,11 @@
 {% endif %}
 </div>
 
+{% if message is not None %}
+<script>
+    alert('{{ message }}');
+</script>
+{% endif %}
+
 <script src="{{ url_for('static', filename='java/apiLookup.js') }}"></script>
 {% endblock %}

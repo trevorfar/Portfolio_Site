@@ -175,25 +175,10 @@ def test():
 
 @app.route('/stock')
 def stock():
-    return render_template('stock.html', plot_data=None)
+    return render_template('stock.html', plot_data=None, message=None)
 
-
-def printResp(obj):
-    text = json.dumps(obj, sort_keys=True, indent=4)
-    print(text)
 
 last_stock_symbol = None
-
-# plt.figure(figsize=(10, 6))
-#     plt.plot(dates, closingPrice, marker='o', linestyle='-')
-#     plt.title(f'Weekly Adjusted Closing Prices for {stock_symbol}')
-#     plt.xlabel('Date')
-#     plt.ylabel('Adjusted Closing Price (USD)')
-#     plt.xticks(rotation=45)
-#     plt.grid(True)
-#     plt.tight_layout()
-#     plt.show()
-
 
 @app.route('/getGraph', methods = ['GET'])
 def getGraph(org):
@@ -231,45 +216,6 @@ def getGraph(org):
 
 
 
-
-
-@app.route('/getPrice', methods = ['GET'])
-def getStockPrice(org):
-
-    global last_stock_symbol
-
-    api_key = os.environ.get('API_KEY')
-    stock_symbol = request.args.get('symbol')
-
-    if not stock_symbol:
-        return "Please provide a valid stock symbol"
-
-    if stock_symbol == last_stock_symbol:
-        return "Please provide a new stock symbol"
-    
-    base_url = "https://www.alphavantage.co/query"
-    function = "GLOBAL_QUOTE"    
-
-# Construct the API request URL
-    params = {
-        "function": function,
-        "symbol": stock_symbol,
-        "apikey": api_key,
-    }
-    
-    response = requests.get(base_url, params=params)
-
-    print(response.status_code)
-    printResp(response.json())
-    data = response.json()
-
-    processed_price_data = {
-        'price': data["Global Quote"]["05. price"],
-        'title': data["Global Quote"]["01. symbol"],
-        'change': data["Global Quote"]["09. change"]
-    }
-    return processed_price_data
-
     # if response.status_code == 200:
     #     try:    
     #         data = response.json()
@@ -303,7 +249,9 @@ def parseBothRoutes():
     stock_symbol = request.args.get('symbol')
     if not stock_symbol:
         return "Please provide a valid stock symbol"   
-       
+    message = "I'm sorry you're seeing this. Unfortunately I've maxed out on API requests :( "
+    return render_template("stock.html", message=message)   
+
     if request.method=="GET":
         with open('test.json', 'r') as file:
             data = json.load(file)
@@ -330,8 +278,7 @@ def parseBothRoutes():
         plot_data = base64.b64encode(buffer.read()).decode('utf-8')
         return render_template('stock.html', plot_data=plot_data)
     
-    print("ERROR")
-    return redirect(url_for('index'))
+  
     
 
     
