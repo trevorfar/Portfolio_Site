@@ -169,9 +169,8 @@ def update():
         return str(playedGames.gamesPlayed)
     return "null"
 
-@app.route('/test')
-def test():
-    return render_template('test.html')
+
+
 
 @app.route('/stock')
 def stock():
@@ -199,8 +198,15 @@ def getGraph(org):
         "symbol": stock_symbol,
         "apikey": api_key,
     }
-    
+    message = "I am sorry you are seeing this. Unfortunately I have maxed out on API requests :( 25 out of 25 perday"
+    message2 = "Invalid stock symbol"
+
     response = requests.get(base_url, params=params)
+    if response.status_code == 429:
+
+        return render_template("stock.html", message=message, plot_dat=None)   
+    if response.status_code == 200:
+        render_template("stock.html", message=message2, plot_dat=None)
 
     data = response.json()
     weekly_data = data['Weekly Adjusted Time Series']
@@ -215,43 +221,13 @@ def getGraph(org):
     return processed_graph_data
 
 
-
-    # if response.status_code == 200:
-    #     try:    
-    #         data = response.json()
-    #         print(data)
-
-    #         if "Global Quote" in data:
-    #             global_quote = data["Global Quote"]
-    #             last_stock_symbol = stock_symbol
-#.
-    #             if not global_quote:
-    #                 return "Empty response for the given symbol. It may not be a valid stock symbol."
-                
-    #             return  render_template('stock.html', price=data["Global Quote"]["05. price"], title = data["Global Quote"]["01. symbol"], change = data["Global Quote"]["09. change"])
-    #         else:
-    #             return "symbol not found"
-    #     except json.JSONDecodeError: 
-    #         return f"Error: {response.status_code}" 
-
- # graph_data = getGraph(stock_symbol)
-    # price_data = getStockPrice(stock_symbol)
-
-    # combined_data = {
-    #     'graph_data': graph_data,
-    #     'price_data': price_data
-
-
-
 @app.route('/stockRoute', methods=['GET', 'POST'])
 def parseBothRoutes():
 
     stock_symbol = request.args.get('symbol')
     if not stock_symbol:
         return "Please provide a valid stock symbol"   
-    message = "I'm sorry you're seeing this. Unfortunately I've maxed out on API requests :( "
-    return render_template("stock.html", message=message)   
-
+    
     if request.method=="GET":
         with open('test.json', 'r') as file:
             data = json.load(file)
@@ -276,13 +252,10 @@ def parseBothRoutes():
         buffer.seek(0)
 
         plot_data = base64.b64encode(buffer.read()).decode('utf-8')
-        return render_template('stock.html', plot_data=plot_data)
+        return render_template('stock.html', message=None, plot_data=plot_data)
     
+    return render_template("stock.html", message=None, plot_dat=None)   
   
-    
-
-    
-    
 
 def usernameValid(username): 
     if(len(username) <= 12 and len(username) >= 3):
