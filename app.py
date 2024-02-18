@@ -199,16 +199,20 @@ def getGraph(org):
         "apikey": api_key,
     }
     message = "I am sorry you are seeing this. Unfortunately I have maxed out on API requests :( 25 out of 25 perday"
-    message2 = "Invalid stock symbol"
 
     response = requests.get(base_url, params=params)
+    print(response.status_code)
     if response.status_code == 429:
         return render_template("stock.html", message=message, plot_dat=None)   
     
-    if response.status_code == 400:
-        return 301
+    if response.status_code == 200:
+        data = response.json()
 
-    data = response.json()
+    if "Error Message" in data:
+        return 301  # Symbol is invalid
+
+
+
     weekly_data = data['Weekly Adjusted Time Series']
 
     dates = list(weekly_data.keys())
